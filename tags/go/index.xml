@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Go on Roman Peshkov</title>
+    <link>/tags/go/</link>
+    <description>Recent content in Go on Roman Peshkov</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 28 Jun 2017 23:18:08 +0200</lastBuildDate>
+    
+	<atom:link href="/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Golang Variable Shadowing</title>
+      <link>/blog/golang-variable-shadowing/</link>
+      <pubDate>Wed, 28 Jun 2017 23:18:08 +0200</pubDate>
+      
+      <guid>/blog/golang-variable-shadowing/</guid>
+      <description>Recently I&amp;rsquo;ve been playing with some code in Go. Code was quite simple, but what I wanted is to simplify error handling a little bit and make code more readable.
+As many Go developers know, error handling in Go is usually done this way:
+func templateToFile(templateFilename string, filename string, data interface{}) error { f, err := os.OpenFile(filename, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666) if err != nil { return err } defer f.Close() t, err := template.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en-us">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+        <title>Golang Variable Shadowing &middot; Roman Peshkov</title>
+
+    
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/brands.css"
+          integrity="sha384-ATC/oZittI09GYIoscTZKDdBr/kI3lCwzw3oBMnOYCPVNJ4i7elNlCxSgLfdfFbl" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/fontawesome.css"
+          integrity="sha384-Lyz+8VfV0lv38W729WFAmn77iH5OSroyONnUva4+gYaQTic3iI2fnUKtDSpbVf0J" crossorigin="anonymous">
+
+    
+    <link rel="stylesheet" href="/css/main.css">
+
+    <meta name="generator" content="Hugo 0.38.2" />
+
+    
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="header__in">
+            <a href="/" class="logo">
+    <div>Roman Peshkov</div>
+    <small>developer, geek, workaholic</small>
+</a>
+
+
+            <nav class="navigation">
+                <ul class="navigation__menu">
+    
+    
+        <li class="navigation__item">
+            <a href="/blog/"
+            class="navigation__link"
+            title="Blog">Blog</a>
+        </li>
+    
+        <li class="navigation__item">
+            <a href="/links/"
+            class="navigation__link"
+            title="Links">Links</a>
+        </li>
+    
+</ul>
+
+            </nav>
+        </div>
+    </header>
+
+
+<div class="wrapper content-container">
+    <main class="content">
+        <h1>Golang Variable Shadowing</h1>
+        <div class="meta font_small" style="color: #93a1a1">
+            Posted on
+            
+                <time datetime="2017-06-28">Jun 28, 2017</time>
+            
+            in
+            
+                
+                    <a class="meta" href="/tags/go">#go</a>
+                
+            
+        </div>
+
+        
+
+<p>Recently I&rsquo;ve been playing with some code in Go. Code was quite simple, but what I wanted is to simplify error handling a little bit and make code more readable.</p>
+
+<p>As many Go developers know, error handling in Go is usually done this way:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">templateToFile</span>(<span style="color:#a6e22e">templateFilename</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">filename</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">data</span> <span style="color:#66d9ef">interface</span>{}) <span style="color:#66d9ef">error</span> {
+
+	<span style="color:#a6e22e">f</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">OpenFile</span>(<span style="color:#a6e22e">filename</span>, <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">O_WRONLY</span>|<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">O_TRUNC</span>|<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">O_CREATE</span>, <span style="color:#ae81ff">0666</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+	}
+	<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">Close</span>()
+
+	<span style="color:#a6e22e">t</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">template</span>.<span style="color:#a6e22e">ParseFiles</span>(<span style="color:#a6e22e">templateFilename</span>)
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">err</span>
+	}
+
+	<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Execute</span>(<span style="color:#a6e22e">f</span>, <span style="color:#a6e22e">data</span>)
+}</code></pre></div>
+
+<p>I&rsquo;ve used to it too, but I was wondering whether this can be simplified. So I decided to use named return values and reorganize my code to something like this</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">templateToFile</span>(<span style="color:#a6e22e">templateFilename</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">filename</span> <span style="color:#66d9ef">string</span>, <span style="color:#a6e22e">data</span> <span style="color:#66d9ef">interface</span>{}) (<span style="color:#a6e22e">err</span> <span style="color:#66d9ef">error</span>) {
+
+	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">f</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">OpenFile</span>(<span style="color:#a6e22e">filename</span>, <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">O_WRONLY</span>|<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">O_TRUNC</span>|<span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">O_CREATE</span>, <span style="color:#ae81ff">0666</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+		<span style="color:#66d9ef">defer</span> <span style="color:#a6e22e">f</span>.<span style="color:#a6e22e">Close</span>()
+
+		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">t</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">template</span>.<span style="color:#a6e22e">ParseFiles</span>(<span style="color:#a6e22e">templateFilename</span>); <span style="color:#a6e22e">err</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">nil</span> {
+			<span style="color:#66d9ef">return</span> <span style="color:#a6e22e">t</span>.<span style="color:#a6e22e">Execute</span>(<span style="color:#a6e22e">f</span>, <span style="color:#a6e22e">data</span>)
+		}
+	}
+	<span style="color:#66d9ef">return</span>
+}</code></pre></div>
+
+<p>As you can see, here I have named return variable <code>err</code> and in each operation we put something there so that if <code>os.OpenFile</code> fails, you&rsquo;ll get <code>err != nil</code> and it will be returned. Theoretically this looks nice, but it doesn&rsquo;t work because of variable shadowing. In this particular example <code>err</code> in return value, <code>err</code> in first if block and <code>err</code> in second if block are different variables!</p>
+
+<p>My assumption that my code would work was based on this statement from <a href="https://golang.org/ref/spec">Golang Specification</a>:</p>
+
+<blockquote>
+<p>Redeclaration does not introduce a new variable; it just assigns a new value to the original.</p>
+</blockquote>
+
+<p>That&rsquo;s true, redeclaration just assigns a new value to the original but there&rsquo;s a small note&hellip; if they&rsquo;re in the same block.</p>
+
+<p>Information from the specification</p>
+
+<blockquote>
+<p>An identifier declared in a block may be redeclared in an inner block. While the identifier of the inner declaration is in scope, it denotes the entity declared by the inner declaration.</p>
+</blockquote>
+
+<p>So, if you use short assignment (<code>:=</code>) to declare variable with the same name in inner block, you will have new variable that has the same name as in outer block and any changes of the value won&rsquo;t affect variable from outer block.</p>
+
+<p>Really good sample of this behavior you can find in <a href="http://devs.cloudimmunity.com/gotchas-and-common-mistakes-in-go-golang/">50 Shades of Go</a>:</p>
+
+<p><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">main</span>() {
+    <span style="color:#a6e22e">x</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">1</span>
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">x</span>)     <span style="color:#75715e">//prints 1
+</span><span style="color:#75715e"></span>    {
+        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">x</span>) <span style="color:#75715e">//prints 1
+</span><span style="color:#75715e"></span>        <span style="color:#a6e22e">x</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">2</span>
+        <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">x</span>) <span style="color:#75715e">//prints 2
+</span><span style="color:#75715e"></span>    }
+    <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Println</span>(<span style="color:#a6e22e">x</span>)     <span style="color:#75715e">//prints 1 (bad if you need 2)
+</span><span style="color:#75715e"></span>}</code></pre></div></p>
+
+<h2 id="detect-shadowing">Detect shadowing</h2>
+
+<p>Variable shadowing can be detected by <code>vet</code> command from Go. Call it this way:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">go tool vet --shadow file.go</code></pre></div>
+
+<p>When you run this command, you&rsquo;ll see shadowing issues in the file you&rsquo;ve provided.</p>
+
+<p>Example:</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">main.go:14: declaration of <span style="color:#e6db74">&#34;err&#34;</span> shadows declaration at main.go:13</code></pre></div>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Shadowed variables is basic type of errors and easily can be detected. However, when you have never faced this error before, you can spend some time trying to understand what&rsquo;s going on in your code.</p>
+
+<p>Be careful with shadowing and always vet your code!</p>
+
+
+        <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    </main>
+</div>
+
+<footer class="footer">Copyright &copy; 2018 Roman Peshkov</footer>
+</body>
+</html>
+

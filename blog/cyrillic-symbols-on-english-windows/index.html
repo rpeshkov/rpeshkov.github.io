@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en-us">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+        <title>Cyrillic symbols on english Windows 10 &middot; Roman Peshkov</title>
+
+    
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/brands.css"
+          integrity="sha384-ATC/oZittI09GYIoscTZKDdBr/kI3lCwzw3oBMnOYCPVNJ4i7elNlCxSgLfdfFbl" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/fontawesome.css"
+          integrity="sha384-Lyz+8VfV0lv38W729WFAmn77iH5OSroyONnUva4+gYaQTic3iI2fnUKtDSpbVf0J" crossorigin="anonymous">
+
+    
+    <link rel="stylesheet" href="/css/main.css">
+
+    <meta name="generator" content="Hugo 0.38.2" />
+
+    
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="header__in">
+            <a href="/" class="logo">
+    <div>Roman Peshkov</div>
+    <small>developer, geek, workaholic</small>
+</a>
+
+
+            <nav class="navigation">
+                <ul class="navigation__menu">
+    
+    
+        <li class="navigation__item">
+            <a href="/blog/"
+            class="navigation__link"
+            title="Blog">Blog</a>
+        </li>
+    
+        <li class="navigation__item">
+            <a href="/links/"
+            class="navigation__link"
+            title="Links">Links</a>
+        </li>
+    
+</ul>
+
+            </nav>
+        </div>
+    </header>
+
+
+<div class="wrapper content-container">
+    <main class="content">
+        <h1>Cyrillic symbols on english Windows 10</h1>
+        <div class="meta font_small" style="color: #93a1a1">
+            Posted on
+            
+                <time datetime="2016-10-16">Oct 16, 2016</time>
+            
+            in
+            
+                
+                    <a class="meta" href="/tags/windows">#windows</a>
+                
+            
+        </div>
+
+        <p>I use english version of Windows 10 but sometimes I have to deal with files that have cyrillic names or with cyrillic
+commit messages in TortoiseHg.</p>
+
+<p>I&rsquo;ve found that my favorite image viewer <a href="http://xnview.com">XnView</a> doesn&rsquo;t work properly with cyrillic paths when
+installed on english Windows:</p>
+
+<p><img src="xnview.png" alt="XnView" /></p>
+
+<p>TortoiseHg Workbench have some issues too:</p>
+
+<p><img src="question-marks.png" alt="TortoiseHg Workbench" /></p>
+
+<p>That particular issues mean that XnView and TortoiseHg Workbench doesn&rsquo;t support Unicode. However, there&rsquo;s a fix for
+this by applying some settings in Windows. You need to tell Windows which language to use for non-Unicode applications.</p>
+
+<p>1) Navigate to Control Panel, either by Start Menu or by running <code>control</code> command.</p>
+
+<p><img src="start-menu.png" alt="Start Menu" /></p>
+
+<p>2) Open &ldquo;Language&rdquo; item in Control Panel and select &ldquo;Change date, time, or number formats&rdquo;.</p>
+
+<p><img src="control-panel-language.png" alt="Language" /></p>
+
+<p>3) Navigate to &ldquo;Administrative&rdquo; tab and push &ldquo;Change system locale&hellip;&rdquo; button.</p>
+
+<p><img src="language-administrative.png" alt="Administrative tab" /></p>
+
+<p>4) Select &ldquo;Russian (Russia)&rdquo; option from dropdown and save all the windows that you&rsquo;ve opened.</p>
+
+<p>5) Restart your computer.</p>
+
+<p>When your computer will restart, XnView will be able to work with cyrillic paths and TortoiseHg will display commit
+messages correctly.</p>
+
+
+        <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    </main>
+</div>
+
+<footer class="footer">Copyright &copy; 2018 Roman Peshkov</footer>
+</body>
+</html>
+

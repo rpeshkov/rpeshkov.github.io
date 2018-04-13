@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Fonts on Roman Peshkov</title>
+    <link>/tags/fonts/</link>
+    <description>Recent content in Fonts on Roman Peshkov</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 12 Oct 2016 23:55:13 +0300</lastBuildDate>
+    
+	<atom:link href="/tags/fonts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Sudo font</title>
+      <link>/blog/sudo-font/</link>
+      <pubDate>Wed, 12 Oct 2016 23:55:13 +0300</pubDate>
+      
+      <guid>/blog/sudo-font/</guid>
+      <description>For quite a long time I&amp;rsquo;ve been searching for the font that looks really close to Envy Code R but have cyrillic support. And finally I&amp;rsquo;ve found it! Behold the bringer of light - Sudo.</description>
+    </item>
+    
+  </channel>
+</rss>

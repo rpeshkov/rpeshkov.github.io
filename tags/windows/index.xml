@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Windows on Roman Peshkov</title>
+    <link>/tags/windows/</link>
+    <description>Recent content in Windows on Roman Peshkov</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 16 Oct 2016 22:42:54 +0300</lastBuildDate>
+    
+	<atom:link href="/tags/windows/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Cyrillic symbols on english Windows 10</title>
+      <link>/blog/cyrillic-symbols-on-english-windows/</link>
+      <pubDate>Sun, 16 Oct 2016 22:42:54 +0300</pubDate>
+      
+      <guid>/blog/cyrillic-symbols-on-english-windows/</guid>
+      <description>I use english version of Windows 10 but sometimes I have to deal with files that have cyrillic names or with cyrillic commit messages in TortoiseHg.
+I&amp;rsquo;ve found that my favorite image viewer XnView doesn&amp;rsquo;t work properly with cyrillic paths when installed on english Windows:
+TortoiseHg Workbench have some issues too:
+That particular issues mean that XnView and TortoiseHg Workbench doesn&amp;rsquo;t support Unicode. However, there&amp;rsquo;s a fix for this by applying some settings in Windows.</description>
+    </item>
+    
+  </channel>
+</rss>
