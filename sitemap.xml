@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/blog/vscode-extension-di/</loc>
+    <lastmod>2018-08-02T20:00:05+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/blog/vscode-extension-coverage/</loc>
     <lastmod>2018-05-06T22:38:35+02:00</lastmod>
   </url>
@@ -34,7 +39,7 @@
   
   <url>
     <loc>/blog/</loc>
-    <lastmod>2018-05-06T22:38:35+02:00</lastmod>
+    <lastmod>2018-08-02T20:00:05+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -69,7 +74,7 @@
   
   <url>
     <loc>/tags/vscode/</loc>
-    <lastmod>2018-05-06T22:38:35+02:00</lastmod>
+    <lastmod>2018-08-02T20:00:05+02:00</lastmod>
     <priority>0</priority>
   </url>
   
