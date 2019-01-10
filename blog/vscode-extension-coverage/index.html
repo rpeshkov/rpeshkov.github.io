@@ -90,16 +90,16 @@ Open your terminal and type yo code in it. You can leave all the values to their
 
 <p>Open your terminal and type <code>yo code</code> in it. You can leave all the values to their defaults. Here what I used for generating extension:</p>
 
-<p><a href="./1-yeoman-code-generator.png"><img src="./1-yeoman-code-generator.png" alt="Yeoman VSCode extension generator" /></a></p>
+<p><a href="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-coverage/1-yeoman-code-generator.png"><img src="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-coverage/1-yeoman-code-generator.png" alt="Yeoman VSCode extension generator" /></a></p>
 
 <p>After last question about initializing git repository, generator will install scaffold extension code and install all the required npm packages. Now you can navigate into the extension&rsquo;s folder and open it in VSCode:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cd vscode-testcov
 code .</code></pre></div>
-<p><a href="./2-vscode-with-opened-extension.png"><img src="./2-vscode-with-opened-extension.png" alt="VSCode with opened extension" /></a></p>
+<p><a href="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-coverage/2-vscode-with-opened-extension.png"><img src="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-coverage/2-vscode-with-opened-extension.png" alt="VSCode with opened extension" /></a></p>
 
 <p>Just in order the check that everything is fine, try to launch tests for your new extension. If everything is fine, you should see similar picture in your debug console:</p>
 
-<p><a href="./3-vscode-run-tests.png"><img src="./3-vscode-run-tests.png" alt="VSCode after running tests" /></a></p>
+<p><a href="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-coverage/3-vscode-run-tests.png"><img src="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-coverage/3-vscode-run-tests.png" alt="VSCode after running tests" /></a></p>
 
 <h2 id="istanbul-for-code-coverage">Istanbul for code coverage</h2>
 
@@ -385,7 +385,7 @@ Lines        : <span style="color:#ae81ff">6</span>.73% <span style="color:#f926
 reports written to /Users/rpeshkov/Developer/vscode-extensions/vscode-testcov/coverage</code></pre></div>
 <p>Yay! All the information related to code coverage was saved to <code>coverage</code> folder in the root of your extension. You now can open <code>index.html</code> file there to see HTML-based report.</p>
 
-<p><a href="./4-html-report.png"><img src="./4-html-report.png" alt="HTML Code coverage report" /></a></p>
+<p><a href="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-coverage/4-html-report.png"><img src="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-coverage/4-html-report.png" alt="HTML Code coverage report" /></a></p>
 
 <p>It looks really nice, but you may noticed one small problem here that tests code was covered as well. That doesn&rsquo;t seem right, so let&rsquo;s fix it by some structural changes.</p>
 
@@ -393,7 +393,7 @@ reports written to /Users/rpeshkov/Developer/vscode-extensions/vscode-testcov/co
 
 <p>The problem with tests code coverage arise from a simple fact that coverage is measured for <code>src</code> folder and tests code is there as well. To fix this, move <code>test</code> folder out of <code>src</code> folder so they will be on the same level.</p>
 
-<p><a href="./5-src-test-folders.png"><img src="./5-src-test-folders.png" alt="src and test folders" /></a></p>
+<p><a href="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-coverage/5-src-test-folders.png"><img src="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-coverage/5-src-test-folders.png" alt="src and test folders" /></a></p>
 
 <p>With this change you also need to change a couple of parameters in your <code>tsconfig.json</code> file and <code>package.json</code> file.</p>
 
@@ -412,7 +412,7 @@ reports written to /Users/rpeshkov/Developer/vscode-extensions/vscode-testcov/co
     </main>
 </div>
 
-<footer class="footer">Copyright &copy; 2018 Roman Peshkov</footer>
+<footer class="footer">Copyright &copy; 2019 Roman Peshkov</footer>
 </body>
 </html>
 

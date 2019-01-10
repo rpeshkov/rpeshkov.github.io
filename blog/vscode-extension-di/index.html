@@ -93,7 +93,7 @@ First we need to create our extension. You can read about extension creation in 
 
 <p>First we need to create our extension. You can read about extension creation in my post about <a href="/blog/vscode-extension-coverage/#creating-extension">VSCode extension code coverage</a>. I&rsquo;ve chosen <code>vscode-di</code> name for extension so everywhere later I&rsquo;ll be using that name. After extension is created, open it in VSCode.</p>
 
-<p><a href="./1-vscode.png"><img src="./1-vscode.png" alt="VSCode with extension" /></a></p>
+<p><a href="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-di/1-vscode.png"><img src="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-di/1-vscode.png" alt="VSCode with extension" /></a></p>
 
 <p>After you have extension created it&rsquo;s required to install InversifyJS itself and also additional package called <a href="https://www.npmjs.com/package/reflect-metadata">reflect-metadata</a>. Do it via this console command:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">npm install inversify reflect-metadata --save</code></pre></div>
@@ -295,7 +295,7 @@ First we need to create our extension. You can read about extension creation in 
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">Running the contributed command:<span style="color:#e6db74">&#39;extension.add&#39;</span> failed.</code></pre></div>
 <p>You might be wondering &ldquo;why did that happen???&rdquo;. Well, if you will try to launch your extension under debug and stop at breakpoint inside any command&rsquo;s execute method, you&rsquo;ll notice that <code>this</code> is undefined.</p>
 
-<p><a href="./2-extension-debug.png"><img src="./2-extension-debug.png" alt="Extension run inside debugger" /></a></p>
+<p><a href="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-di/2-extension-debug.png"><img src="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-di/2-extension-debug.png" alt="Extension run inside debugger" /></a></p>
 
 <p>Explanation for this is quite simple: <code>this</code> context is not set to your object when <code>execute</code> method is launched. You can fix this by providing correct <code>this</code> context when registering your command inside VSCode. Open your <code>CommandManager</code> and find line with <code>registerCommand</code> invocation. This function accepts third parameter <code>thisArg?: any</code>. Since it&rsquo;s optional and we didn&rsquo;t provide it, <code>this</code> when <code>execute</code> method is called by VSCode is undefined.</p>
 
@@ -305,7 +305,7 @@ First we need to create our extension. You can read about extension creation in 
 
 <p>You can try to launch extension once again and you&rsquo;ll notice that everything works fine and your commands displaying messages in debug console of VSCode.</p>
 
-<p><a href="./3-debug-console-output.png"><img src="./3-debug-console-output.png" alt="Debug console output" /></a></p>
+<p><a href="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-di/3-debug-console-output.png"><img src="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-di/3-debug-console-output.png" alt="Debug console output" /></a></p>
 
 <h2 id="conclusion">Conclusion</h2>
 
@@ -316,7 +316,7 @@ First we need to create our extension. You can read about extension creation in 
     </main>
 </div>
 
-<footer class="footer">Copyright &copy; 2018 Roman Peshkov</footer>
+<footer class="footer">Copyright &copy; 2019 Roman Peshkov</footer>
 </body>
 </html>
 
