@@ -3,6 +3,21 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/wiki/angular/</loc>
+    <lastmod>2019-01-23T09:22:38+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/links/</loc>
+    <lastmod>2019-01-22T22:07:52+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/wiki/</loc>
+    <lastmod>2019-01-22T21:45:15+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/blog/vscode-extension-di/</loc>
     <lastmod>2018-08-02T20:00:05+02:00</lastmod>
   </url>
@@ -18,11 +33,6 @@
   </url>
   
   <url>
-    <loc>/links/</loc>
-    <lastmod>2018-04-04T01:29:40+02:00</lastmod>
-  </url>
-  
-  <url>
     <loc>/blog/golang-variable-shadowing/</loc>
     <lastmod>2017-06-28T23:18:08+02:00</lastmod>
   </url>
@@ -35,6 +45,12 @@
   <url>
     <loc>/blog/sudo-font/</loc>
     <lastmod>2016-10-12T23:55:13+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/angular/</loc>
+    <lastmod>2019-01-23T09:22:38+01:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -68,7 +84,7 @@
   
   <url>
     <loc>/tags/</loc>
-    <lastmod>2016-10-12T23:55:13+03:00</lastmod>
+    <lastmod>2019-01-23T09:22:38+01:00</lastmod>
     <priority>0</priority>
   </url>
   
