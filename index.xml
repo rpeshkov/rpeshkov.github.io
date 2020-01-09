@@ -12,6 +12,16 @@
     
     
     <item>
+      <title>Update timestamp in Hugo post</title>
+      <link>/blog/update-timestamp-hugo-post/</link>
+      <pubDate>Sat, 02 Feb 2019 19:02:35 +0000</pubDate>
+      
+      <guid>/blog/update-timestamp-hugo-post/</guid>
+      <description>This site is built entirely with Hugo. Hugo itself has a lot of useful commands bundled, but there&amp;rsquo;s one case which is missing for me: update timestamp of some particular post without editing it manually.
+My usecase for this is that when I generate new post, I might be writing in more than 1 day because of different reasons. But when I finish the post and want to publish it, I want post to have the date when it was finished.</description>
+    </item>
+    
+    <item>
       <title>TypeScript</title>
       <link>/wiki/typescript/</link>
       <pubDate>Wed, 30 Jan 2019 13:21:13 +0100</pubDate>

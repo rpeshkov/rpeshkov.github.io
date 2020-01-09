@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en-us">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Hugo 0.54.0" />
+
+    
+        <title>Update timestamp in Hugo post &middot; Roman Peshkov</title>
+
+    
+
+    
+<link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|Merriweather:400,400i,700" rel="stylesheet">
+
+
+
+<link rel="stylesheet" href="/css/main.css">
+
+    
+
+    <meta name="twitter:title" content="Update timestamp in Hugo post"/>
+<meta name="twitter:description" content="This site is built entirely with Hugo. Hugo itself has a lot of useful commands bundled, but there&rsquo;s one case which is missing for me: update timestamp of some particular post without editing it manually.
+My usecase for this is that when I generate new post, I might be writing in more than 1 day because of different reasons. But when I finish the post and want to publish it, I want post to have the date when it was finished."/>
+<meta name="twitter:card" content="summary"/>
+
+<meta name="twitter:site" content="@rpeshkov"/>
+    <meta name="twitter:creator" content="@rpeshkov"/>
+
+</head>
+
+<body>
+    <header class="header">
+        <div class="wrapper">
+            <a href="/" class="logo">
+    <div>Roman Peshkov</div>
+    <small>developer, geek, workaholic</small>
+</a>
+
+
+            <nav class="navigation">
+                <ul class="navigation__menu">
+    
+    
+        <li class="navigation__item">
+            <a href="/blog/"
+            class="navigation__link"
+            title="Blog">Blog</a>
+        </li>
+    
+        <li class="navigation__item">
+            <a href="/wiki/"
+            class="navigation__link"
+            title="Wiki">Wiki</a>
+        </li>
+    
+        <li class="navigation__item">
+            <a href="/links/"
+            class="navigation__link"
+            title="Links">Links</a>
+        </li>
+    
+        <li class="navigation__item">
+            <a href="/index.xml"
+            class="navigation__link"
+            title="RSS">RSS</a>
+        </li>
+    
+</ul>
+
+            </nav>
+        </div>
+    </header>
+
+
+<div class="wrapper content-container">
+    <main class="content">
+        <h1>Update timestamp in Hugo post</h1>
+        <div class="meta font_small">
+            Posted on
+            
+                <time datetime="2019-02-02">Feb 02, 2019</time>
+            
+            in
+            
+                
+                    <a href="/tags/hugo">#hugo</a>
+                
+            
+        </div>
+
+        <p>This site is built entirely with Hugo. Hugo itself has a lot of useful commands bundled, but there&rsquo;s one case which is missing for me: update timestamp of some particular post without editing it manually.</p>
+
+<p>My usecase for this is that when I generate new post, I might be writing in more than 1 day because of different reasons. But when I finish the post and want to publish it, I want post to have the date when it was finished. In that case I need to open the post, go to preamble and change the date manually.</p>
+
+<p>Since, I&rsquo;m quite lazy, I decided to automate this thing and created small Python script that work similar to <code>touch</code> command in *nix systems. This script goes through file and tries to find <code>date</code> field in preamble. If it was found, it just updates the field with current date. Very handy!</p>
+
+<p>Here&rsquo;s the script:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#6272a4">#!/usr/bin/env python3</span>
+
+<span style="color:#ff79c6">import</span> sys
+<span style="color:#ff79c6">from</span> datetime <span style="color:#ff79c6">import</span> datetime
+
+<span style="color:#ff79c6">if</span> <span style="color:#8be9fd;font-style:italic">len</span>(sys<span style="color:#ff79c6">.</span>argv) <span style="color:#ff79c6">&lt;</span> <span style="color:#bd93f9">2</span>:
+    <span style="color:#ff79c6">print</span>(<span style="color:#f1fa8c">&#39;Please provide filename&#39;</span>)
+    sys<span style="color:#ff79c6">.</span><span style="color:#8be9fd;font-style:italic">exit</span>(<span style="color:#bd93f9">1</span>)
+
+<span style="color:#ff79c6">with</span> <span style="color:#8be9fd;font-style:italic">open</span>(sys<span style="color:#ff79c6">.</span>argv[<span style="color:#bd93f9">1</span>], <span style="color:#f1fa8c">&#39;r&#39;</span>) <span style="color:#ff79c6">as</span> f:
+    lines <span style="color:#ff79c6">=</span> f<span style="color:#ff79c6">.</span>readlines()
+
+found <span style="color:#ff79c6">=</span> False
+outlines <span style="color:#ff79c6">=</span> []
+
+now_date <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#39;&#39;</span>
+
+<span style="color:#ff79c6">for</span> line <span style="color:#ff79c6">in</span> lines:
+    <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">not</span> found <span style="color:#ff79c6">and</span> line<span style="color:#ff79c6">.</span>startswith(<span style="color:#f1fa8c">&#39;date&#39;</span>):
+        now_date <span style="color:#ff79c6">=</span> datetime<span style="color:#ff79c6">.</span>utcnow()<span style="color:#ff79c6">.</span>strftime(<span style="color:#f1fa8c">&#34;%Y-%m-</span><span style="color:#f1fa8c">%d</span><span style="color:#f1fa8c">T%H:%M:%SZ&#34;</span>)
+        line <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#39;date: &#39;</span> <span style="color:#ff79c6">+</span> now_date <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#39;</span><span style="color:#f1fa8c">\n</span><span style="color:#f1fa8c">&#39;</span>
+        found <span style="color:#ff79c6">=</span> True
+
+    outlines<span style="color:#ff79c6">.</span>append(line)
+
+<span style="color:#ff79c6">if</span> <span style="color:#ff79c6">not</span> found:
+    <span style="color:#ff79c6">print</span>(<span style="color:#f1fa8c">&#39;Date was not found in file!&#39;</span>)
+    sys<span style="color:#ff79c6">.</span><span style="color:#8be9fd;font-style:italic">exit</span>(<span style="color:#bd93f9">1</span>)
+
+<span style="color:#ff79c6">with</span> <span style="color:#8be9fd;font-style:italic">open</span>(sys<span style="color:#ff79c6">.</span>argv[<span style="color:#bd93f9">1</span>], <span style="color:#f1fa8c">&#39;w&#39;</span>) <span style="color:#ff79c6">as</span> f:
+    f<span style="color:#ff79c6">.</span>writelines(outlines)
+
+<span style="color:#ff79c6">print</span>(<span style="color:#f1fa8c">&#39;Date updated to &#39;</span> <span style="color:#ff79c6">+</span> now_date)</code></pre></div>
+<p>It&rsquo;s really simple and works only with <code>YAML</code> preamble, but it do the job for me. I placed it into <code>/usr/local/bin</code> and now, when I need to update date to current in any of my blog posts, I just simply invoke it like</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">hugo-touch ./content/glob/update-timestamp-hugo-post.md</code></pre></div>
+<p>Unfortunately, I haven&rsquo;t found the way to extend Hugo itself with additional command, like it&rsquo;s possible to do with Git. If you know how to do this, please drop me a message in Twitter.</p>
+
+
+        
+    </main>
+</div>
+
+<footer class="footer">Copyright &copy; 2019 Roman Peshkov</footer>
+</body>
+</html>
+
