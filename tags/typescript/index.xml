@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Typescript on Roman Peshkov</title>
+    <title>typescript on Roman Peshkov</title>
     <link>/tags/typescript/</link>
-    <description>Recent content in Typescript on Roman Peshkov</description>
+    <description>Recent content in typescript on Roman Peshkov</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 30 Jan 2019 13:21:13 +0100</lastBuildDate>
