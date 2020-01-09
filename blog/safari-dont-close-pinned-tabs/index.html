@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en-us">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Hugo 0.54.0" />
+
+    
+        <title>Safari, don&#39;t close pinned tabs &middot; Roman Peshkov</title>
+
+    
+
+    
+<link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|Merriweather:400,400i,700" rel="stylesheet">
+
+
+
+<link rel="stylesheet" href="/css/main.css">
+
+    
+
+    <meta name="twitter:title" content="Safari, don&#39;t close pinned tabs"/>
+<meta name="twitter:description" content="I love Safari. It&rsquo;s really fast, robust and great browser that works well for all my usecases. Though I hate how it handles pinned tabs by default.
+I used to think that pinned tabs are tabs that can&rsquo;t be closed. That works well in Safari actually. If you try to close pinned tab, it will just switch you to another tab, without actually closing this tab. But things get bad when you close last not pinned tab with Command&#43;w shortcut."/>
+<meta name="twitter:card" content="summary"/>
+
+<meta name="twitter:site" content="@rpeshkov"/>
+    <meta name="twitter:creator" content="@rpeshkov"/>
+
+</head>
+
+<body>
+    <header class="header">
+        <div class="wrapper">
+            <a href="/" class="logo">
+    <div>Roman Peshkov</div>
+    <small>developer, geek, workaholic</small>
+</a>
+
+
+            <nav class="navigation">
+                <ul class="navigation__menu">
+    
+    
+        <li class="navigation__item">
+            <a href="/blog/"
+            class="navigation__link"
+            title="Blog">Blog</a>
+        </li>
+    
+        <li class="navigation__item">
+            <a href="/wiki/"
+            class="navigation__link"
+            title="Wiki">Wiki</a>
+        </li>
+    
+        <li class="navigation__item">
+            <a href="/links/"
+            class="navigation__link"
+            title="Links">Links</a>
+        </li>
+    
+        <li class="navigation__item">
+            <a href="/index.xml"
+            class="navigation__link"
+            title="RSS">RSS</a>
+        </li>
+    
+</ul>
+
+            </nav>
+        </div>
+    </header>
+
+
+<div class="wrapper content-container">
+    <main class="content">
+        <h1>Safari, don&#39;t close pinned tabs</h1>
+        <div class="meta font_small">
+            Posted on
+            
+                <time datetime="2019-02-03">Feb 03, 2019</time>
+            
+            in
+            
+                
+                    <a href="/tags/macos">#macos</a>
+                
+                    <a href="/tags/safari">#safari</a>
+                
+            
+        </div>
+
+        <p>I love Safari. It&rsquo;s really fast, robust and great browser that works well for all my usecases. Though I hate how it handles pinned tabs by default.</p>
+
+<p>I used to think that pinned tabs are tabs that can&rsquo;t be closed. That works well in Safari actually. If you try to close pinned tab, it will just switch you to another tab, without actually closing this tab. But things get bad when you close last not pinned tab with <code>Command+w</code> shortcut. Safari will just close the whole window and all your pinned tabs, even if some tab was playing music! This  happens because it looks like that Safari doesn&rsquo;t treat pinned tabs as real tabs and if you take a look to File menu when you have only 1 tab available, you&rsquo;ll see that <code>Command+w</code> binded to Close Window operation and not Close Tab. This annoying behavior can be fixed though.</p>
+
+<p>In MacOS it&rsquo;s possible to define shortcut for menu entry of any particular application. It&rsquo;s done through Keyboard settings pane in System Preferences of MacOS, but it&rsquo;s easier to set it via command line.</p>
+
+<p>Here&rsquo;s the commands:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">defaults write com.apple.universalaccess com.apple.custommenu.apps -array-add <span style="color:#f1fa8c">&#39;&lt;string&gt;com.apple.Safari&lt;/string&gt;&#39;</span>
+defaults write com.apple.Safari NSUserKeyEquivalents <span style="color:#f1fa8c">&#39;{&#34;Close Tab&#34;=&#34;@w&#34;;}&#39;</span></code></pre></div>
+<p>First line adds Safari to the list inside &ldquo;App Shortcuts&rdquo; section of shortcuts settings. Second line sets that <code>Command+w</code> shortcut should be used for closing tab.</p>
+
+<p>After applying those commands it&rsquo;s required to restart Safari.</p>
+
+<p>Once restarted, <code>Command+w</code> shortcut will be always closing tab and will never close the window, even if there&rsquo;s last tab left. This breaks MacOS HIG a bit, because now you can&rsquo;t close the window via <code>Command+w</code>, but still it&rsquo;s always possible to close the window via <code>Command+Shift+w</code> shortcut.</p>
+
+
+        
+    </main>
+</div>
+
+<footer class="footer">Copyright &copy; 2019 Roman Peshkov</footer>
+</body>
+</html>
+

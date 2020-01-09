@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/blog/safari-dont-close-pinned-tabs/</loc>
+    <lastmod>2019-02-03T15:00:52+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/blog/update-timestamp-hugo-post/</loc>
     <lastmod>2019-02-02T19:02:35+00:00</lastmod>
   </url>
@@ -70,7 +75,7 @@
   
   <url>
     <loc>/blog/</loc>
-    <lastmod>2019-02-02T19:02:35+00:00</lastmod>
+    <lastmod>2019-02-03T15:00:52+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -92,13 +97,13 @@
   </url>
   
   <url>
-    <loc>/categories/go/</loc>
+    <loc>/tags/go/</loc>
     <lastmod>2017-06-28T23:18:08+02:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/tags/go/</loc>
+    <loc>/categories/go/</loc>
     <lastmod>2017-06-28T23:18:08+02:00</lastmod>
     <priority>0</priority>
   </url>
@@ -112,6 +117,18 @@
   <url>
     <loc>/tags/jenkins/</loc>
     <lastmod>2019-01-29T00:02:30+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/macos/</loc>
+    <lastmod>2019-02-03T15:00:52+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/safari/</loc>
+    <lastmod>2019-02-03T15:00:52+00:00</lastmod>
     <priority>0</priority>
   </url>
   
