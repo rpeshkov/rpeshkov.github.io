@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Document</title>
+    </head>
+    <body style="margin: 20px;">
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const template = document.createElement("template");
+                template.innerHTML = `<input id="mytext" type="text">`;
+                class FormField extends HTMLElement {
+                    constructor() {
+                        super();
+                        this._shadowRoot = this.attachShadow({
+                            mode: "open"
+                        });
+                        this._shadowRoot.appendChild(
+                            template.content.cloneNode(true)
+                        );
+                    }
+                }
+                customElements.define("form-field", FormField);
+            });
+        </script>
+
+        <form-field></form-field>
+    </body>
+</html>
