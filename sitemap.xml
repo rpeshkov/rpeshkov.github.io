@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/wiki/typescript/</loc>
+    <lastmod>2019-01-30T13:21:13+01:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/wiki/jenkins/</loc>
     <lastmod>2019-01-29T00:02:30+01:00</lastmod>
   </url>
@@ -102,6 +107,12 @@
   <url>
     <loc>/tags/</loc>
     <lastmod>2019-01-23T09:22:38+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/typescript/</loc>
+    <lastmod>2019-01-30T13:21:13+01:00</lastmod>
     <priority>0</priority>
   </url>
   
