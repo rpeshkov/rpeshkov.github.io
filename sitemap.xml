@@ -3,6 +3,23 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/tags/react/</loc>
+    <lastmod>2019-06-17T09:00:00+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/wiki/react/</loc>
+    <lastmod>2019-06-17T09:00:00+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2019-06-17T09:00:00+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>/blog/</loc>
     <lastmod>2019-02-03T15:00:52+00:00</lastmod>
     <priority>0</priority>
@@ -11,12 +28,6 @@
   <url>
     <loc>/blog/safari-dont-close-pinned-tabs/</loc>
     <lastmod>2019-02-03T15:00:52+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
-    <lastmod>2019-02-03T15:00:52+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
