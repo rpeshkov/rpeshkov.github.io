@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>Ci</title>
+      <link>/tags/ci/</link>
+      <pubDate>Tue, 29 Jan 2019 00:02:30 +0100</pubDate>
+      
+      <guid>/tags/ci/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Fonts</title>
       <link>/tags/fonts/</link>
       <pubDate>Wed, 12 Oct 2016 23:55:13 +0300</pubDate>
@@ -35,6 +44,15 @@
       <pubDate>Wed, 28 Jun 2017 23:18:08 +0200</pubDate>
       
       <guid>/tags/go/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Jenkins</title>
+      <link>/tags/jenkins/</link>
+      <pubDate>Tue, 29 Jan 2019 00:02:30 +0100</pubDate>
+      
+      <guid>/tags/jenkins/</guid>
       <description></description>
     </item>
     
