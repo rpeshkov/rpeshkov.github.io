@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>React on Roman Peshkov</title>
@@ -17,7 +17,7 @@
       <pubDate>Mon, 17 Jun 2019 09:00:00 +0100</pubDate>
       
       <guid>/wiki/react/</guid>
-      <description> I18n  React i18next i18next  </description>
+      <description>I18n  React i18next i18next  </description>
     </item>
     
   </channel>

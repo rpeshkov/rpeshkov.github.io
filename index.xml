@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>About on Roman Peshkov</title>
@@ -17,7 +17,7 @@
       <pubDate>Mon, 17 Jun 2019 09:00:00 +0100</pubDate>
       
       <guid>/wiki/react/</guid>
-      <description> I18n  React i18next i18next  </description>
+      <description>I18n  React i18next i18next  </description>
     </item>
     
     <item>
@@ -26,8 +26,8 @@
       <pubDate>Sun, 03 Feb 2019 15:00:52 +0000</pubDate>
       
       <guid>/blog/safari-dont-close-pinned-tabs/</guid>
-      <description>I love Safari. It&amp;rsquo;s really fast, robust and great browser that works well for all my usecases. Though I hate how it handles pinned tabs by default.
-I used to think that pinned tabs are tabs that can&amp;rsquo;t be closed. That works well in Safari actually. If you try to close pinned tab, it will just switch you to another tab, without actually closing this tab. But things get bad when you close last not pinned tab with Command+w shortcut.</description>
+      <description>I love Safari. It&#39;s really fast, robust and great browser that works well for all my usecases. Though I hate how it handles pinned tabs by default.
+I used to think that pinned tabs are tabs that can&#39;t be closed. That works well in Safari actually. If you try to close pinned tab, it will just switch you to another tab, without actually closing this tab. But things get bad when you close last not pinned tab with Command+w shortcut.</description>
     </item>
     
     <item>
@@ -36,7 +36,7 @@ I used to think that pinned tabs are tabs that can&amp;rsquo;t be closed. That w
       <pubDate>Sat, 02 Feb 2019 19:02:35 +0000</pubDate>
       
       <guid>/blog/update-timestamp-hugo-post/</guid>
-      <description>This site is built entirely with Hugo. Hugo itself has a lot of useful commands bundled, but there&amp;rsquo;s one case which is missing for me: update timestamp of some particular post without editing it manually.
+      <description>This site is built entirely with Hugo. Hugo itself has a lot of useful commands bundled, but there&#39;s one case which is missing for me: update timestamp of some particular post without editing it manually.
 My usecase for this is that when I generate new post, I might be writing in more than 1 day because of different reasons. But when I finish the post and want to publish it, I want post to have the date when it was finished.</description>
     </item>
     
@@ -46,7 +46,7 @@ My usecase for this is that when I generate new post, I might be writing in more
       <pubDate>Wed, 30 Jan 2019 13:21:13 +0100</pubDate>
       
       <guid>/wiki/typescript/</guid>
-      <description> Links  Sexier imports in TypeScript  </description>
+      <description>Links  Sexier imports in TypeScript  </description>
     </item>
     
     <item>
@@ -66,7 +66,7 @@ pipeline{ agent { label &amp;#39;nodejs8&amp;#39; } stages{ stage (&amp;#39;chec
       <pubDate>Wed, 23 Jan 2019 09:22:38 +0100</pubDate>
       
       <guid>/wiki/angular/</guid>
-      <description> Angular CLI  Extend the Angular CLI&amp;rsquo;s default build behavior without ejecting Schematics — An Introduction  </description>
+      <description>Angular CLI  Extend the Angular CLI&#39;s default build behavior without ejecting Schematics — An Introduction  </description>
     </item>
     
     <item>
@@ -75,7 +75,7 @@ pipeline{ agent { label &amp;#39;nodejs8&amp;#39; } stages{ stage (&amp;#39;chec
       <pubDate>Tue, 22 Jan 2019 22:07:52 +0000</pubDate>
       
       <guid>/links/</guid>
-      <description> This page is a collection of links or blogs that I read and find interesting.
+      <description>This page is a collection of links or blogs that I read and find interesting.
 Blogs  Alex Edwards: A lot of useful information about Go language. Overreacted: Personal blog by Dan Abramov. rwieruch;: Personal blog by Robin Wieruch.  Links  Nikita Voloboev Wiki: Great collection of useful things for automation of your system.  </description>
     </item>
     
@@ -85,9 +85,9 @@ Blogs  Alex Edwards: A lot of useful information about Go language. Overreacted:
       <pubDate>Thu, 02 Aug 2018 20:00:05 +0200</pubDate>
       
       <guid>/blog/vscode-extension-di/</guid>
-      <description>In this post I&amp;rsquo;ll show how to use dependency injection in your extension via InversifyJS library. Here&amp;rsquo;s about from official site:
+      <description>In this post I&#39;ll show how to use dependency injection in your extension via InversifyJS library. Here&#39;s about from official site:
  InversifyJS is a lightweight (4KB) inversion of control (IoC) container for TypeScript and JavaScript apps. A IoC container uses a class constructor to identify and inject its dependencies.
- Sounds good. Let&amp;rsquo;s begin. :)
+ Sounds good. Let&#39;s begin. :)
 First we need to create our extension. You can read about extension creation in my post about VSCode extension code coverage.</description>
     </item>
     
@@ -97,8 +97,8 @@ First we need to create our extension. You can read about extension creation in 
       <pubDate>Sun, 06 May 2018 22:38:35 +0200</pubDate>
       
       <guid>/blog/vscode-extension-coverage/</guid>
-      <description>In this article I&amp;rsquo;ll show you how to add code coverage info for you Visual Studio Code extension code. We&amp;rsquo;ll start from the very beginning and in the end you&amp;rsquo;ll have working extension with code coverage metrics setup.
-Creating extension Creating extension is fairly simple. We&amp;rsquo;ll start from the default code that&amp;rsquo;s generated by Yeoman&amp;rsquo;s generator for VSCode.
+      <description>In this article I&#39;ll show you how to add code coverage info for you Visual Studio Code extension code. We&#39;ll start from the very beginning and in the end you&#39;ll have working extension with code coverage metrics setup.
+Creating extension Creating extension is fairly simple. We&#39;ll start from the default code that&#39;s generated by Yeoman&#39;s generator for VSCode.
 Open your terminal and type yo code in it. You can leave all the values to their defaults.</description>
     </item>
     
@@ -108,7 +108,7 @@ Open your terminal and type yo code in it. You can leave all the values to their
       <pubDate>Wed, 28 Jun 2017 23:18:08 +0200</pubDate>
       
       <guid>/blog/golang-variable-shadowing/</guid>
-      <description>Recently I&amp;rsquo;ve been playing with some code in Go. Code was quite simple, but what I wanted is to simplify error handling a little bit and make code more readable.
+      <description>Recently I&#39;ve been playing with some code in Go. Code was quite simple, but what I wanted is to simplify error handling a little bit and make code more readable.
 As many Go developers know, error handling in Go is usually done this way:
 func templateToFile(templateFilename string, filename string, data interface{}) error { f, err := os.OpenFile(filename, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666) if err != nil { return err } defer f.Close() t, err := template.</description>
     </item>
@@ -120,9 +120,9 @@ func templateToFile(templateFilename string, filename string, data interface{}) 
       
       <guid>/blog/cyrillic-symbols-on-english-windows/</guid>
       <description>I use english version of Windows 10 but sometimes I have to deal with files that have cyrillic names or with cyrillic commit messages in TortoiseHg.
-I&amp;rsquo;ve found that my favorite image viewer XnView doesn&amp;rsquo;t work properly with cyrillic paths when installed on english Windows:
+I&#39;ve found that my favorite image viewer XnView doesn&#39;t work properly with cyrillic paths when installed on english Windows:
 TortoiseHg Workbench have some issues too:
-That particular issues mean that XnView and TortoiseHg Workbench doesn&amp;rsquo;t support Unicode. However, there&amp;rsquo;s a fix for this by applying some settings in Windows.</description>
+That particular issues mean that XnView and TortoiseHg Workbench doesn&#39;t support Unicode. However, there&#39;s a fix for this by applying some settings in Windows.</description>
     </item>
     
     <item>
@@ -131,7 +131,7 @@ That particular issues mean that XnView and TortoiseHg Workbench doesn&amp;rsquo
       <pubDate>Wed, 12 Oct 2016 23:55:13 +0300</pubDate>
       
       <guid>/blog/sudo-font/</guid>
-      <description>For quite a long time I&amp;rsquo;ve been searching for the font that looks really close to Envy Code R but have cyrillic support. And finally I&amp;rsquo;ve found it! Behold the bringer of light - Sudo.</description>
+      <description>For quite a long time I&#39;ve been searching for the font that looks really close to Envy Code R but have cyrillic support. And finally I&#39;ve found it! Behold the bringer of light - Sudo.</description>
     </item>
     
   </channel>

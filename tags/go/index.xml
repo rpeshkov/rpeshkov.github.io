@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Go on Roman Peshkov</title>
@@ -17,7 +17,7 @@
       <pubDate>Wed, 28 Jun 2017 23:18:08 +0200</pubDate>
       
       <guid>/blog/golang-variable-shadowing/</guid>
-      <description>Recently I&amp;rsquo;ve been playing with some code in Go. Code was quite simple, but what I wanted is to simplify error handling a little bit and make code more readable.
+      <description>Recently I&#39;ve been playing with some code in Go. Code was quite simple, but what I wanted is to simplify error handling a little bit and make code more readable.
 As many Go developers know, error handling in Go is usually done this way:
 func templateToFile(templateFilename string, filename string, data interface{}) error { f, err := os.OpenFile(filename, os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666) if err != nil { return err } defer f.Close() t, err := template.</description>
     </item>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Wiki on Roman Peshkov</title>
@@ -17,7 +17,7 @@
       <pubDate>Mon, 17 Jun 2019 09:00:00 +0100</pubDate>
       
       <guid>/wiki/react/</guid>
-      <description> I18n  React i18next i18next  </description>
+      <description>I18n  React i18next i18next  </description>
     </item>
     
     <item>
@@ -26,7 +26,7 @@
       <pubDate>Wed, 30 Jan 2019 13:21:13 +0100</pubDate>
       
       <guid>/wiki/typescript/</guid>
-      <description> Links  Sexier imports in TypeScript  </description>
+      <description>Links  Sexier imports in TypeScript  </description>
     </item>
     
     <item>
@@ -46,7 +46,7 @@ pipeline{ agent { label &amp;#39;nodejs8&amp;#39; } stages{ stage (&amp;#39;chec
       <pubDate>Wed, 23 Jan 2019 09:22:38 +0100</pubDate>
       
       <guid>/wiki/angular/</guid>
-      <description> Angular CLI  Extend the Angular CLI&amp;rsquo;s default build behavior without ejecting Schematics — An Introduction  </description>
+      <description>Angular CLI  Extend the Angular CLI&#39;s default build behavior without ejecting Schematics — An Introduction  </description>
     </item>
     
   </channel>

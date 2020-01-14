@@ -4,27 +4,29 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="Hugo 0.55.6" />
+    <meta name="generator" content="Hugo 0.62.0" />
 
     
         <title>Cyrillic symbols on english Windows 10 &middot; Roman Peshkov</title>
 
     
 
-    
-<link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|Merriweather:400,400i,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono|Merriweather:400,400i,700" rel="stylesheet">
 
 
 
-<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="/styles/main.css">
 
     
 
     <meta name="twitter:title" content="Cyrillic symbols on english Windows 10"/>
 <meta name="twitter:description" content="I use english version of Windows 10 but sometimes I have to deal with files that have cyrillic names or with cyrillic commit messages in TortoiseHg.
-I&rsquo;ve found that my favorite image viewer XnView doesn&rsquo;t work properly with cyrillic paths when installed on english Windows:
+I&#39;ve found that my favorite image viewer XnView doesn&#39;t work properly with cyrillic paths when installed on english Windows:
 TortoiseHg Workbench have some issues too:
-That particular issues mean that XnView and TortoiseHg Workbench doesn&rsquo;t support Unicode. However, there&rsquo;s a fix for this by applying some settings in Windows."/>
+That particular issues mean that XnView and TortoiseHg Workbench doesn&#39;t support Unicode. However, there&#39;s a fix for this by applying some settings in Windows."/>
 <meta name="twitter:card" content="summary"/>
 
 <meta name="twitter:site" content="@rpeshkov"/>
@@ -94,35 +96,33 @@ That particular issues mean that XnView and TortoiseHg Workbench doesn&rsquo;t s
 
         <p>I use english version of Windows 10 but sometimes I have to deal with files that have cyrillic names or with cyrillic
 commit messages in TortoiseHg.</p>
-
-<p>I&rsquo;ve found that my favorite image viewer <a href="http://xnview.com">XnView</a> doesn&rsquo;t work properly with cyrillic paths when
+<p>I've found that my favorite image viewer <a href="http://xnview.com">XnView</a> doesn't work properly with cyrillic paths when
 installed on english Windows:</p>
-
-<p><img src="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/cyrillic-symbols-on-english-windows/xnview.png" alt="XnView" /></p>
-
+<p><img src="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/cyrillic-symbols-on-english-windows/xnview.png" alt="XnView"></p>
 <p>TortoiseHg Workbench have some issues too:</p>
-
-<p><img src="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/cyrillic-symbols-on-english-windows/question-marks.png" alt="TortoiseHg Workbench" /></p>
-
-<p>That particular issues mean that XnView and TortoiseHg Workbench doesn&rsquo;t support Unicode. However, there&rsquo;s a fix for
+<p><img src="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/cyrillic-symbols-on-english-windows/question-marks.png" alt="TortoiseHg Workbench"></p>
+<p>That particular issues mean that XnView and TortoiseHg Workbench doesn't support Unicode. However, there's a fix for
 this by applying some settings in Windows. You need to tell Windows which language to use for non-Unicode applications.</p>
-
-<p>1) Navigate to Control Panel, either by Start Menu or by running <code>control</code> command.</p>
-
-<p><img src="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/cyrillic-symbols-on-english-windows/start-menu.png" alt="Start Menu" /></p>
-
-<p>2) Open &ldquo;Language&rdquo; item in Control Panel and select &ldquo;Change date, time, or number formats&rdquo;.</p>
-
-<p><img src="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/cyrillic-symbols-on-english-windows/control-panel-language.png" alt="Language" /></p>
-
-<p>3) Navigate to &ldquo;Administrative&rdquo; tab and push &ldquo;Change system locale&hellip;&rdquo; button.</p>
-
-<p><img src="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/cyrillic-symbols-on-english-windows/language-administrative.png" alt="Administrative tab" /></p>
-
-<p>4) Select &ldquo;Russian (Russia)&rdquo; option from dropdown and save all the windows that you&rsquo;ve opened.</p>
-
-<p>5) Restart your computer.</p>
-
+<ol>
+<li>Navigate to Control Panel, either by Start Menu or by running <code>control</code> command.</li>
+</ol>
+<p><img src="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/cyrillic-symbols-on-english-windows/start-menu.png" alt="Start Menu"></p>
+<ol start="2">
+<li>Open &ldquo;Language&rdquo; item in Control Panel and select &ldquo;Change date, time, or number formats&rdquo;.</li>
+</ol>
+<p><img src="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/cyrillic-symbols-on-english-windows/control-panel-language.png" alt="Language"></p>
+<ol start="3">
+<li>Navigate to &ldquo;Administrative&rdquo; tab and push &ldquo;Change system locale&hellip;&rdquo; button.</li>
+</ol>
+<p><img src="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/cyrillic-symbols-on-english-windows/language-administrative.png" alt="Administrative tab"></p>
+<ol start="4">
+<li>
+<p>Select &ldquo;Russian (Russia)&rdquo; option from dropdown and save all the windows that you've opened.</p>
+</li>
+<li>
+<p>Restart your computer.</p>
+</li>
+</ol>
 <p>When your computer will restart, XnView will be able to work with cyrillic paths and TortoiseHg will display commit
 messages correctly.</p>
 

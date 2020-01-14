@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>fonts on Roman Peshkov</title>
@@ -17,7 +17,7 @@
       <pubDate>Wed, 12 Oct 2016 23:55:13 +0300</pubDate>
       
       <guid>/blog/sudo-font/</guid>
-      <description>For quite a long time I&amp;rsquo;ve been searching for the font that looks really close to Envy Code R but have cyrillic support. And finally I&amp;rsquo;ve found it! Behold the bringer of light - Sudo.</description>
+      <description>For quite a long time I&#39;ve been searching for the font that looks really close to Envy Code R but have cyrillic support. And finally I&#39;ve found it! Behold the bringer of light - Sudo.</description>
     </item>
     
   </channel>
