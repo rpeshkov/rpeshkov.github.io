@@ -6,19 +6,15 @@
     <description>Recent content in safari on Roman Peshkov</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 03 Feb 2019 15:00:52 +0000</lastBuildDate>
-    
-	<atom:link href="/tags/safari/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 03 Feb 2019 15:00:52 +0000</lastBuildDate><atom:link href="/tags/safari/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Safari, don&#39;t close pinned tabs</title>
       <link>/blog/safari-dont-close-pinned-tabs/</link>
       <pubDate>Sun, 03 Feb 2019 15:00:52 +0000</pubDate>
       
       <guid>/blog/safari-dont-close-pinned-tabs/</guid>
-      <description>I love Safari. It&#39;s really fast, robust and great browser that works well for all my usecases. Though I hate how it handles pinned tabs by default.
-I used to think that pinned tabs are tabs that can&#39;t be closed. That works well in Safari actually. If you try to close pinned tab, it will just switch you to another tab, without actually closing this tab. But things get bad when you close last not pinned tab with Command+w shortcut.</description>
+      <description>I love Safari. It&amp;rsquo;s really fast, robust and great browser that works well for all my usecases. Though I hate how it handles pinned tabs by default.
+I used to think that pinned tabs are tabs that can&amp;rsquo;t be closed. That works well in Safari actually. If you try to close pinned tab, it will just switch you to another tab, without actually closing this tab. But things get bad when you close last not pinned tab with Command+w shortcut.</description>
     </item>
     
   </channel>

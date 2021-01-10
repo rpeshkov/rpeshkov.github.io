@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="Hugo 0.62.0" />
+    <meta name="generator" content="Hugo 0.80.0" />
 
     
         <title>Jenkins &middot; Roman Peshkov</title>
@@ -101,12 +101,12 @@ pipeline{ agent { label &#39;nodejs8&#39; } stages{ stage (&#39;checkout&#39;){ 
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">pipeline<span style="color:#ff79c6">{</span>
   agent <span style="color:#ff79c6">{</span> label <span style="color:#f1fa8c">&#39;nodejs8&#39;</span> <span style="color:#ff79c6">}</span>
   stages<span style="color:#ff79c6">{</span>
-    stage <span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#39;checkout&#39;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+    stage <span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#39;checkout&#39;</span><span style="color:#ff79c6">){</span>
       steps<span style="color:#ff79c6">{</span>
         checkout scm
       <span style="color:#ff79c6">}</span>
     <span style="color:#ff79c6">}</span>
-    stage <span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#39;install modules&#39;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+    stage <span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#39;install modules&#39;</span><span style="color:#ff79c6">){</span>
       steps<span style="color:#ff79c6">{</span>
         sh <span style="color:#f1fa8c">&#39;&#39;&#39;
 </span><span style="color:#f1fa8c">          npm install --verbose -d
@@ -114,7 +114,7 @@ pipeline{ agent { label &#39;nodejs8&#39; } stages{ stage (&#39;checkout&#39;){ 
 </span><span style="color:#f1fa8c">        &#39;&#39;&#39;</span>
       <span style="color:#ff79c6">}</span>
     <span style="color:#ff79c6">}</span>
-    stage <span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#39;test&#39;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+    stage <span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#39;test&#39;</span><span style="color:#ff79c6">){</span>
       steps<span style="color:#ff79c6">{</span>
         sh <span style="color:#f1fa8c">&#39;&#39;&#39;
 </span><span style="color:#f1fa8c">          $(npm bin)/ng test --single-run --browsers Chrome_no_sandbox
@@ -126,7 +126,7 @@ pipeline{ agent { label &#39;nodejs8&#39; } stages{ stage (&#39;checkout&#39;){ 
           <span style="color:#ff79c6">}</span>
       <span style="color:#ff79c6">}</span>
     <span style="color:#ff79c6">}</span>
-    stage <span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#39;code quality&#39;</span><span style="color:#ff79c6">)</span><span style="color:#ff79c6">{</span>
+    stage <span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#39;code quality&#39;</span><span style="color:#ff79c6">){</span>
       steps<span style="color:#ff79c6">{</span>
         sh <span style="color:#f1fa8c">&#39;$(npm bin)/ng lint&#39;</span>
       <span style="color:#ff79c6">}</span>

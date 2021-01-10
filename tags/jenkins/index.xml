@@ -6,11 +6,7 @@
     <description>Recent content in jenkins on Roman Peshkov</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 29 Jan 2019 00:02:30 +0100</lastBuildDate>
-    
-	<atom:link href="/tags/jenkins/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Tue, 29 Jan 2019 00:02:30 +0100</lastBuildDate><atom:link href="/tags/jenkins/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Jenkins</title>
       <link>/wiki/jenkins/</link>
