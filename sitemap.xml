@@ -1,155 +1,95 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
   <url>
     <loc>/tags/react/</loc>
     <lastmod>2019-06-17T09:00:00+01:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/wiki/react/</loc>
     <lastmod>2019-06-17T09:00:00+01:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/</loc>
     <lastmod>2019-06-17T09:00:00+01:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/blog/</loc>
     <lastmod>2019-02-03T15:00:52+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/macos/</loc>
     <lastmod>2019-02-03T15:00:52+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/safari/</loc>
     <lastmod>2019-02-03T15:00:52+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/blog/safari-dont-close-pinned-tabs/</loc>
     <lastmod>2019-02-03T15:00:52+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/hugo/</loc>
     <lastmod>2019-02-02T19:02:35+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/blog/update-timestamp-hugo-post/</loc>
     <lastmod>2019-02-02T19:02:35+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/wiki/typescript/</loc>
     <lastmod>2019-01-30T13:21:13+01:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/typescript/</loc>
     <lastmod>2019-01-30T13:21:13+01:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/ci/</loc>
     <lastmod>2019-01-29T00:02:30+01:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/wiki/jenkins/</loc>
     <lastmod>2019-01-29T00:02:30+01:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/jenkins/</loc>
     <lastmod>2019-01-29T00:02:30+01:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/angular/</loc>
     <lastmod>2019-01-23T09:22:38+01:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/wiki/angular/</loc>
     <lastmod>2019-01-23T09:22:38+01:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/links/</loc>
     <lastmod>2019-01-22T22:07:52+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/wiki/</loc>
     <lastmod>2019-01-22T21:45:15+00:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/vscode/</loc>
     <lastmod>2018-08-02T20:00:05+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/blog/vscode-extension-di/</loc>
     <lastmod>2018-08-02T20:00:05+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/blog/vscode-extension-coverage/</loc>
     <lastmod>2018-05-06T22:38:35+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/</loc>
     <lastmod>2018-04-05T23:31:35+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/categories/</loc>
     <lastmod>2017-06-28T23:18:08+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/go/</loc>
     <lastmod>2017-06-28T23:18:08+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/categories/go/</loc>
     <lastmod>2017-06-28T23:18:08+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/blog/golang-variable-shadowing/</loc>
     <lastmod>2017-06-28T23:18:08+02:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/blog/cyrillic-symbols-on-english-windows/</loc>
     <lastmod>2016-10-16T22:42:54+03:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/windows/</loc>
     <lastmod>2016-10-16T22:42:54+03:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/tags/fonts/</loc>
     <lastmod>2016-10-12T23:55:13+03:00</lastmod>
-  </url>
-  
-  <url>
+  </url><url>
     <loc>/blog/sudo-font/</loc>
     <lastmod>2016-10-12T23:55:13+03:00</lastmod>
   </url>
-  
 </urlset>

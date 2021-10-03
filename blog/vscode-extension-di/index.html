@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="Hugo 0.80.0" />
+    <meta name="generator" content="Hugo 0.88.1" />
 
     
         <title>VSCode extension dependency injection &middot; Roman Peshkov</title>
@@ -102,13 +102,13 @@ First we need to create our extension. You can read about extension creation in 
 <p>First we need to create our extension. You can read about extension creation in my post about <a href="/blog/vscode-extension-coverage/#creating-extension">VSCode extension code coverage</a>. I&rsquo;ve chosen <code>vscode-di</code> name for extension so everywhere later I&rsquo;ll be using that name. After extension is created, open it in VSCode.</p>
 <p><a href="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-di/1-vscode.png"><img src="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-di/1-vscode.png" alt="VSCode with extension"></a></p>
 <p>After you have extension created it&rsquo;s required to install InversifyJS itself and also additional package called <a href="https://www.npmjs.com/package/reflect-metadata">reflect-metadata</a>. Do it via this console command:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">npm install inversify reflect-metadata --save
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">npm install inversify reflect-metadata --save
 </code></pre></div><p>Here what I got:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">+ reflect-metadata@0.1.12
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">+ reflect-metadata@0.1.12
 + inversify@4.13.0
 </code></pre></div><p>One note here: packages installed as dependencies and not devDependencies. That&rsquo;s very important thing. If you install those packages as dev dependencies, it will still work fine while you&rsquo;re developing, but it will crash if your extension will be installed from marketplace.</p>
 <p>Next step that&rsquo;s required is to enable some compilation options in your <code>tsconfig.json</code> file. <code>experimentalDecorators</code> and <code>emitDecoratorMetadata</code> options must be enabled. Open <code>tsconfig.json</code> file and add there required changes. Here how my <code>tsconfig.json</code> file looks like after changes:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
     <span style="color:#ff79c6">&#34;compilerOptions&#34;</span>: {
         <span style="color:#ff79c6">&#34;module&#34;</span>: <span style="color:#f1fa8c">&#34;commonjs&#34;</span>,
         <span style="color:#ff79c6">&#34;target&#34;</span>: <span style="color:#f1fa8c">&#34;es6&#34;</span>,
@@ -128,25 +128,25 @@ First we need to create our extension. You can read about extension creation in 
 }
 </code></pre></div><p>That&rsquo;s it with initialization, now let&rsquo;s proceed with coding.</p>
 <p>Let&rsquo;s start with defining our interfaces. For this tutorial we&rsquo;ll do very basic stuff just to show how DI works in Inversify.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#ff79c6">export</span> <span style="color:#ff79c6">interface</span> Command {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#ff79c6">export</span> <span style="color:#ff79c6">interface</span> Command {
     id: <span style="color:#8be9fd">string</span>;
     execute(...args: <span style="color:#8be9fd">any</span>[])<span style="color:#ff79c6">:</span> <span style="color:#8be9fd">any</span>;
 }
 </code></pre></div><p>This <code>Command</code> interface will be used for describing commands that we will register in VSCode.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#ff79c6">export</span> <span style="color:#ff79c6">interface</span> Printer {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#ff79c6">export</span> <span style="color:#ff79c6">interface</span> Printer {
     print(message: <span style="color:#8be9fd">string</span>)<span style="color:#ff79c6">:</span> <span style="color:#ff79c6">void</span>;
 }
 </code></pre></div><p>This <code>Printer</code> interface defines abstract point of message output. Later we will inject this <code>Printer</code> into our commands.</p>
 <p>For this article I put <code>Command</code> interface into <code>commands</code> folder and <code>Printer</code> interface into <code>utils</code> folder.</p>
 <p>Also, for correct injection we need symbols. Symbol defines an identifier that will be used later for registering and resolving dependencies. I placed symbols definition in the root of <code>src</code> folder and this file contains this:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#ff79c6">const</span> TYPES <span style="color:#ff79c6">=</span> {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#ff79c6">const</span> TYPES <span style="color:#ff79c6">=</span> {
     Command: <span style="color:#8be9fd">Symbol</span>(<span style="color:#f1fa8c">&#34;Command&#34;</span>),
     Printer: <span style="color:#8be9fd">Symbol</span>(<span style="color:#f1fa8c">&#34;Printer&#34;</span>)
 };
 
 <span style="color:#ff79c6">export</span> <span style="color:#ff79c6">default</span> TYPES;
 </code></pre></div><p>After all those changes, your <code>src</code> folder should look this way:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">.
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">.
 ├── commands
 │   ├── command.ts
 ├── extension.ts
@@ -159,7 +159,7 @@ First we need to create our extension. You can read about extension creation in 
 </code></pre></div><p>Next step will be to define implementations for our interfaces.</p>
 <p>We&rsquo;ll have 2 commands and 1 printer. Commands will be <code>AddCommand</code> and <code>RemoveCommand</code>, and printer will be very simple - the one that displays message in console through <code>console.log</code> call.</p>
 <p>Create new file <code>add-command.ts</code> inside <code>commands</code> folder with the following content:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#ff79c6">import</span> { injectable, inject } <span style="color:#ff79c6">from</span> <span style="color:#f1fa8c">&#39;inversify&#39;</span>;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#ff79c6">import</span> { injectable, inject } <span style="color:#ff79c6">from</span> <span style="color:#f1fa8c">&#39;inversify&#39;</span>;
 
 <span style="color:#ff79c6">import</span> TYPES <span style="color:#ff79c6">from</span> <span style="color:#f1fa8c">&#39;../types&#39;</span>;
 
@@ -188,7 +188,7 @@ First we need to create our extension. You can read about extension creation in 
 <p><code>@injectable</code> decorator tells that this class will be injected. It&rsquo;s mandatory decorator for registering class in the DI container.</p>
 <p><code>@inject</code> decorator for parameter tells DI container that it should resolve the type provided and pass it here.</p>
 <p>Second command that we&rsquo;ll implement looks very similar to <code>AddCommand</code> and it&rsquo;s called <code>RemoveCommand</code>. Create new file <code>remove-command.ts</code> inside <code>commands</code> folder with the following contents:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#ff79c6">import</span> { injectable, inject } <span style="color:#ff79c6">from</span> <span style="color:#f1fa8c">&#39;inversify&#39;</span>;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#ff79c6">import</span> { injectable, inject } <span style="color:#ff79c6">from</span> <span style="color:#f1fa8c">&#39;inversify&#39;</span>;
 
 <span style="color:#ff79c6">import</span> TYPES <span style="color:#ff79c6">from</span> <span style="color:#f1fa8c">&#39;../types&#39;</span>;
 
@@ -211,7 +211,7 @@ First we need to create our extension. You can read about extension creation in 
 }
 </code></pre></div><p>Difference between 2 commands are basically name of the class, id of command and what this command prints via <code>Printer</code>.</p>
 <p>Now, let&rsquo;s implement our printer. Create new file <code>console-printer.ts</code> inside <code>utils</code> folder with the following content:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#ff79c6">import</span> { injectable } <span style="color:#ff79c6">from</span> <span style="color:#f1fa8c">&#39;inversify&#39;</span>;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#ff79c6">import</span> { injectable } <span style="color:#ff79c6">from</span> <span style="color:#f1fa8c">&#39;inversify&#39;</span>;
 <span style="color:#ff79c6">import</span> { Printer } <span style="color:#ff79c6">from</span> <span style="color:#f1fa8c">&#39;./printer&#39;</span>;
 
 <span style="color:#8be9fd;font-style:italic">@injectable</span>()
@@ -222,7 +222,7 @@ First we need to create our extension. You can read about extension creation in 
 }
 </code></pre></div><p>As you may already noticed, it&rsquo;s implementation is very simple.</p>
 <p>Before we will start setting up our container, let&rsquo;s create one more thing that will help up with commands registering in VSCode. I called it <code>CommandsManager</code> and placed near all the commands we defined - inside <code>commands</code> folder. Here how it looks like:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#ff79c6">import</span> <span style="color:#ff79c6">*</span> <span style="color:#ff79c6">as</span> vscode <span style="color:#ff79c6">from</span> <span style="color:#f1fa8c">&#39;vscode&#39;</span>;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#ff79c6">import</span> <span style="color:#ff79c6">*</span> <span style="color:#ff79c6">as</span> vscode <span style="color:#ff79c6">from</span> <span style="color:#f1fa8c">&#39;vscode&#39;</span>;
 <span style="color:#ff79c6">import</span> { multiInject, injectable } <span style="color:#ff79c6">from</span> <span style="color:#f1fa8c">&#39;inversify&#39;</span>;
 <span style="color:#ff79c6">import</span> TYPES <span style="color:#ff79c6">from</span> <span style="color:#f1fa8c">&#39;../types&#39;</span>;
 <span style="color:#ff79c6">import</span> { Command } <span style="color:#ff79c6">from</span> <span style="color:#f1fa8c">&#39;./command&#39;</span>;
@@ -243,7 +243,7 @@ First we need to create our extension. You can read about extension creation in 
 </code></pre></div><p>While this class is quite small, there is one thing that differs from our command implementations. You should notice <code>@multiInject</code> decorator at the constructor parameter and parameter type is array. <code>@multiInject</code> decorator tells DI container to inject all the entities with specified symbol (<code>TYPES.Command</code> in our case). That basically means that all the implementations of <code>Command</code> interface will be passed here as an array.</p>
 <p>Phew, that&rsquo;s it with implementations, now let&rsquo;s finally configure our DI container and try to work with it.</p>
 <p>If you look through official documentation for Inversify, you&rsquo;ll see that it recommends putting container into <code>inversify.config.ts</code> file. Let&rsquo;s stick with this recommendation and create the same file in <code>src</code> folder.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#ff79c6">import</span> <span style="color:#f1fa8c">&#39;reflect-metadata&#39;</span>;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#ff79c6">import</span> <span style="color:#f1fa8c">&#39;reflect-metadata&#39;</span>;
 
 <span style="color:#ff79c6">import</span> { Container } <span style="color:#ff79c6">from</span> <span style="color:#f1fa8c">&#39;inversify&#39;</span>;
 <span style="color:#ff79c6">import</span> TYPES <span style="color:#ff79c6">from</span> <span style="color:#f1fa8c">&#39;./types&#39;</span>;
@@ -264,10 +264,10 @@ container.bind&lt;<span style="color:#ff79c6">CommandsManager</span>&gt;(TYPES.C
 </code></pre></div><p>If you previously worked with any DI container, this will look very familiar to you. Still, one important thing here is the first line. Without it, nothing would work, because this library should be imported globally once.</p>
 <p>So, now we have our entities, symbols and set up our container. Let&rsquo;s finally do something useful and register our commands so that they will be working.</p>
 <p>Open file <code>extension.ts</code> and inside <code>activate</code> method write the following:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#ff79c6">const</span> cmdManager <span style="color:#ff79c6">=</span> container.<span style="color:#ff79c6">get</span>&lt;<span style="color:#ff79c6">CommandsManager</span>&gt;(TYPES.CommandManager);
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#ff79c6">const</span> cmdManager <span style="color:#ff79c6">=</span> container.<span style="color:#ff79c6">get</span>&lt;<span style="color:#ff79c6">CommandsManager</span>&gt;(TYPES.CommandManager);
 cmdManager.registerCommands(context);
 </code></pre></div><p>Also, don&rsquo;t forget to tell in <code>package.json</code> file that your extension contributes commands. Here how mine <code>contributes</code> section looks like:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="color:#f1fa8c">&#34;contributes&#34;</span>: {
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="color:#f1fa8c">&#34;contributes&#34;</span>: {
     <span style="color:#ff79c6">&#34;commands&#34;</span>: [
         {
             <span style="color:#ff79c6">&#34;command&#34;</span>: <span style="color:#f1fa8c">&#34;extension.add&#34;</span>,
@@ -281,12 +281,12 @@ cmdManager.registerCommands(context);
 }
 </code></pre></div><p>That&rsquo;s basically it. You can now launch your extension and try to invoke command from command palette.</p>
 <p>I tried to launch <code>add</code> command and it failed&hellip; :(</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">Running the contributed command:<span style="color:#f1fa8c">&#39;extension.add&#39;</span> failed.
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">Running the contributed command:<span style="color:#f1fa8c">&#39;extension.add&#39;</span> failed.
 </code></pre></div><p>You might be wondering &ldquo;why did that happen???&rdquo;. Well, if you will try to launch your extension under debug and stop at breakpoint inside any command&rsquo;s execute method, you&rsquo;ll notice that <code>this</code> is undefined.</p>
 <p><a href="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-di/2-extension-debug.png"><img src="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-di/2-extension-debug.png" alt="Extension run inside debugger"></a></p>
 <p>Explanation for this is quite simple: <code>this</code> context is not set to your object when <code>execute</code> method is launched. You can fix this by providing correct <code>this</code> context when registering your command inside VSCode. Open your <code>CommandManager</code> and find line with <code>registerCommand</code> invocation. This function accepts third parameter <code>thisArg?: any</code>. Since it&rsquo;s optional and we didn&rsquo;t provide it, <code>this</code> when <code>execute</code> method is called by VSCode is undefined.</p>
 <p>Change this line into this:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#ff79c6">const</span> cmd <span style="color:#ff79c6">=</span> vscode.commands.registerCommand(c.id, c.execute, c);
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#ff79c6">const</span> cmd <span style="color:#ff79c6">=</span> vscode.commands.registerCommand(c.id, c.execute, c);
 </code></pre></div><p>and that will setup correct <code>this</code> context during method execution.</p>
 <p>You can try to launch extension once again and you&rsquo;ll notice that everything works fine and your commands displaying messages in debug console of VSCode.</p>
 <p><a href="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-di/3-debug-console-output.png"><img src="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-di/3-debug-console-output.png" alt="Debug console output"></a></p>
@@ -298,7 +298,7 @@ cmdManager.registerCommands(context);
     </main>
 </div>
 
-<footer class="footer">Copyright &copy; 2020 Roman Peshkov</footer>
+<footer class="footer">Copyright &copy; 2021 Roman Peshkov</footer>
 </body>
 </html>
 

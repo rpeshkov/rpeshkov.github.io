@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="Hugo 0.80.0" />
+    <meta name="generator" content="Hugo 0.88.1" />
 
     
         <title>VSCode extension code coverage &middot; Roman Peshkov</title>
@@ -99,7 +99,7 @@ Open your terminal and type yo code in it. You can leave all the values to their
 <p>Open your terminal and type <code>yo code</code> in it. You can leave all the values to their defaults. Here what I used for generating extension:</p>
 <p><a href="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-coverage/1-yeoman-code-generator.png"><img src="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-coverage/1-yeoman-code-generator.png" alt="Yeoman VSCode extension generator"></a></p>
 <p>After last question about initializing git repository, generator will install scaffold extension code and install all the required npm packages. Now you can navigate into the extension&rsquo;s folder and open it in VSCode:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#8be9fd;font-style:italic">cd</span> vscode-testcov
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#8be9fd;font-style:italic">cd</span> vscode-testcov
 code .
 </code></pre></div><p><a href="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-coverage/2-vscode-with-opened-extension.png"><img src="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-coverage/2-vscode-with-opened-extension.png" alt="VSCode with opened extension"></a></p>
 <p>Just in order the check that everything is fine, try to launch tests for your new extension. If everything is fine, you should see similar picture in your debug console:</p>
@@ -110,9 +110,9 @@ code .
 <p>Yet another JS code coverage tool that computes statement, line, function and branch coverage with module loader hooks to transparently add coverage when running tests. Supports all JS coverage use cases including unit tests, server side functional tests and browser tests. Built for scale.</p>
 </blockquote>
 <p>First we need to add Instabul and other utility packages to our project. Open terminal window, navigate to your project and execute following command:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">npm install istanbul remap-istanbul glob @types/glob decache --save
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">npm install istanbul remap-istanbul glob @types/glob decache --save
 </code></pre></div><p>Here is the output with packages and their versions that were installed:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">+ remap-istanbul@0.11.1
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">+ remap-istanbul@0.11.1
 + istanbul@0.4.5
 + decache@4.4.0
 + glob@7.1.2
@@ -120,7 +120,7 @@ code .
 </code></pre></div><h2 id="reimplementing-test-runner">Reimplementing test runner</h2>
 <p>For launching tests of VSCode extension, VSCode itself provides test runner that does a lot of boilerplate and launches testing framework (Mocha by default). In order to have code coverage in your extension, we need to reimplement this test runner a bit, injecting additional instructions there.</p>
 <p>Now, open <code>index.ts</code> file in <code>src/test</code> folder of extension. You should see there:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#ff79c6">import</span> <span style="color:#ff79c6">*</span> <span style="color:#ff79c6">as</span> testRunner <span style="color:#ff79c6">from</span> <span style="color:#f1fa8c">&#39;vscode/lib/testrunner&#39;</span>;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#ff79c6">import</span> <span style="color:#ff79c6">*</span> <span style="color:#ff79c6">as</span> testRunner <span style="color:#ff79c6">from</span> <span style="color:#f1fa8c">&#39;vscode/lib/testrunner&#39;</span>;
 
 <span style="color:#6272a4">// You can directly control Mocha options by uncommenting the following lines
 </span><span style="color:#6272a4">// See https://github.com/mochajs/mocha/wiki/Using-mocha-programmatically#set-options for more info
@@ -132,7 +132,7 @@ code .
 <span style="color:#ff79c6">module</span>.exports <span style="color:#ff79c6">=</span> testRunner;
 </code></pre></div><p>This is default configuration that basically just sets settings to TDD style and enables colored output.</p>
 <p>Replace contents of this file with the following:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#f1fa8c">&#39;use strict&#39;</span>;
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#f1fa8c">&#39;use strict&#39;</span>;
 
 <span style="color:#ff79c6">declare</span> <span style="color:#8be9fd;font-style:italic">var</span> <span style="color:#ff79c6">global</span><span style="color:#ff79c6">:</span> <span style="color:#8be9fd">any</span>;
 
@@ -352,7 +352,7 @@ exports.run <span style="color:#ff79c6">=</span> run;
 }
 </code></pre></div><p>Originally this code is taken from <a href="https://github.com/codecov/example-typescript-vscode-extension/blob/master/test/index.ts">here</a>, but I&rsquo;ve made some changes to be compatible with strict mode.</p>
 <p>Also, you need to provide configuration for the Istanbul. Create file <code>coverconfig.json</code> in the root of your project with the following content:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
     <span style="color:#ff79c6">&#34;enabled&#34;</span>: <span style="color:#ff79c6">true</span>,
     <span style="color:#ff79c6">&#34;relativeSourcePath&#34;</span>: <span style="color:#f1fa8c">&#34;../src&#34;</span>,
     <span style="color:#ff79c6">&#34;relativeCoverageDir&#34;</span>: <span style="color:#f1fa8c">&#34;../../coverage&#34;</span>,
@@ -369,9 +369,9 @@ exports.run <span style="color:#ff79c6">=</span> run;
 }
 </code></pre></div><p>Now, you&rsquo;re ready to go. Try to launch tests once again and see the results. If you were following the instructions, you should see the message <code>No coverage information was collected, exit without writing coverage information</code> after your tests execution output. What?! Why?! Well, no coverage information was collected because default test doesn&rsquo;t execute any functions from the extension. You can read this message more like <code>There was nothing to collect</code>.</p>
 <p>Change your <code>extension.test.ts</code> file to execute at least something that&rsquo;s related with your extension. Change the body of <code>Something 1</code> test to this:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript">vscode.commands.executeCommand(<span style="color:#f1fa8c">&#34;extension.sayHello&#34;</span>);
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript">vscode.commands.executeCommand(<span style="color:#f1fa8c">&#34;extension.sayHello&#34;</span>);
 </code></pre></div><p>and fix your imports so code would be compilable and then run your tests once again. After all that fixes you would see the report:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#ff79c6">===============================</span> Coverage <span style="color:#8be9fd;font-style:italic">summary</span> <span style="color:#ff79c6">===============================</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#ff79c6">===============================</span> Coverage <span style="color:#8be9fd;font-style:italic">summary</span> <span style="color:#ff79c6">===============================</span>
 Statements   : 6.54% <span style="color:#ff79c6">(</span> 7/107 <span style="color:#ff79c6">)</span>
 Branches     : 0% <span style="color:#ff79c6">(</span> 0/26 <span style="color:#ff79c6">)</span>
 Functions    : 9.09% <span style="color:#ff79c6">(</span> 1/11 <span style="color:#ff79c6">)</span>
@@ -386,9 +386,9 @@ reports written to /Users/rpeshkov/Developer/vscode-extensions/vscode-testcov/co
 <p><a href="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-coverage/5-src-test-folders.png"><img src="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-coverage/5-src-test-folders.png" alt="src and test folders"></a></p>
 <p>With this change you also need to change a couple of parameters in your <code>tsconfig.json</code> file and <code>package.json</code> file.</p>
 <p>In your <code>tsconfig.json</code> file change <code>rootDir</code> parameter to <code>.</code>:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="color:#f1fa8c">&#34;rootDir&#34;</span>: <span style="color:#f1fa8c">&#34;.&#34;</span>,
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="color:#f1fa8c">&#34;rootDir&#34;</span>: <span style="color:#f1fa8c">&#34;.&#34;</span>,
 </code></pre></div><p>In your <code>package.json</code> file change <code>main</code> parameter to <code>./out/src/extension</code>.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="color:#f1fa8c">&#34;main&#34;</span>: <span style="color:#f1fa8c">&#34;./out/src/extension&#34;</span>,
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="color:#f1fa8c">&#34;main&#34;</span>: <span style="color:#f1fa8c">&#34;./out/src/extension&#34;</span>,
 </code></pre></div><p>Now relaunch your tests and you&rsquo;ll see that coverage report doesn&rsquo;t have coverage for your tests code.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>Strange that VSCode extension generator doesn&rsquo;t have this functionality out of the box, but as you can see, it&rsquo;s actually not so hard to implement it by yourself. If you had any troubles during implementation of the steps above, you may get final version from the GitHub repository <a href="https://github.com/rpeshkov/vscode-testcov">https://github.com/rpeshkov/vscode-testcov</a> and compare it with what you got or you can ask me in Twitter and I&rsquo;ll try to help you.</p>
@@ -398,7 +398,7 @@ reports written to /Users/rpeshkov/Developer/vscode-extensions/vscode-testcov/co
     </main>
 </div>
 
-<footer class="footer">Copyright &copy; 2020 Roman Peshkov</footer>
+<footer class="footer">Copyright &copy; 2021 Roman Peshkov</footer>
 </body>
 </html>
 
