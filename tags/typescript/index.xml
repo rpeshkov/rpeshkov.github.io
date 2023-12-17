@@ -6,15 +6,14 @@
     <description>Recent content in typescript on Roman Peshkov</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 30 Jan 2019 13:21:13 +0100</lastBuildDate><atom:link href="/tags/typescript/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 30 Jan 2019 13:21:13 +0100</lastBuildDate>
+    <atom:link href="/tags/typescript/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>TypeScript</title>
       <link>/wiki/typescript/</link>
       <pubDate>Wed, 30 Jan 2019 13:21:13 +0100</pubDate>
-      
       <guid>/wiki/typescript/</guid>
-      <description>Links  Sexier imports in TypeScript  </description>
+      <description>Links Sexier imports in TypeScript </description>
     </item>
-    
   </channel>
 </rss>

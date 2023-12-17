@@ -6,44 +6,35 @@
     <description>Recent content in Wiki on Roman Peshkov</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 22 Jan 2019 21:45:15 +0000</lastBuildDate><atom:link href="/wiki/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 22 Jan 2019 21:45:15 +0000</lastBuildDate>
+    <atom:link href="/wiki/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>React</title>
       <link>/wiki/react/</link>
       <pubDate>Mon, 17 Jun 2019 09:00:00 +0100</pubDate>
-      
       <guid>/wiki/react/</guid>
-      <description>I18n  React i18next i18next  </description>
+      <description>I18n React i18next i18next </description>
     </item>
-    
     <item>
       <title>TypeScript</title>
       <link>/wiki/typescript/</link>
       <pubDate>Wed, 30 Jan 2019 13:21:13 +0100</pubDate>
-      
       <guid>/wiki/typescript/</guid>
-      <description>Links  Sexier imports in TypeScript  </description>
+      <description>Links Sexier imports in TypeScript </description>
     </item>
-    
     <item>
       <title>Jenkins</title>
       <link>/wiki/jenkins/</link>
       <pubDate>Tue, 29 Jan 2019 00:02:30 +0100</pubDate>
-      
       <guid>/wiki/jenkins/</guid>
-      <description>Jenkinsfile A Jenkinsfile is a text file that contains the definition of a Jenkins Pipeline and is checked into source control.
-Sample Jenkinsfile for Angular application. Taken from here
-pipeline{ agent { label &amp;#39;nodejs8&amp;#39; } stages{ stage (&amp;#39;checkout&amp;#39;){ steps{ checkout scm } } stage (&amp;#39;install modules&amp;#39;){ steps{ sh &amp;#39;&amp;#39;&amp;#39; npm install --verbose -d npm install --save classlist.js &amp;#39;&amp;#39;&amp;#39; } } stage (&amp;#39;test&amp;#39;){ steps{ sh &amp;#39;&amp;#39;&amp;#39; $(npm bin)/ng test --single-run --browsers Chrome_no_sandbox &amp;#39;&amp;#39;&amp;#39; } post { always { junit &amp;#34;test-results.</description>
+      <description>Jenkinsfile A Jenkinsfile is a text file that contains the definition of a Jenkins Pipeline and is checked into source control.&#xA;Sample Jenkinsfile for Angular application. Taken from here&#xA;pipeline{ agent { label &amp;#39;nodejs8&amp;#39; } stages{ stage (&amp;#39;checkout&amp;#39;){ steps{ checkout scm } } stage (&amp;#39;install modules&amp;#39;){ steps{ sh &amp;#39;&amp;#39;&amp;#39; npm install --verbose -d npm install --save classlist.js &amp;#39;&amp;#39;&amp;#39; } } stage (&amp;#39;test&amp;#39;){ steps{ sh &amp;#39;&amp;#39;&amp;#39; $(npm bin)/ng test --single-run --browsers Chrome_no_sandbox &amp;#39;&amp;#39;&amp;#39; } post { always { junit &amp;#34;test-results.</description>
     </item>
-    
     <item>
       <title>Angular</title>
       <link>/wiki/angular/</link>
       <pubDate>Wed, 23 Jan 2019 09:22:38 +0100</pubDate>
-      
       <guid>/wiki/angular/</guid>
-      <description>Angular CLI  Extend the Angular CLI&amp;rsquo;s default build behavior without ejecting Schematics — An Introduction  </description>
+      <description>Angular CLI Extend the Angular CLI&amp;rsquo;s default build behavior without ejecting Schematics — An Introduction </description>
     </item>
-    
   </channel>
 </rss>

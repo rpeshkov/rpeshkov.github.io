@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="Hugo 0.88.1" />
+    <meta name="generator" content="Hugo 0.121.1">
 
     
         <title>VSCode extension code coverage &middot; Roman Peshkov</title>
@@ -99,9 +99,9 @@ Open your terminal and type yo code in it. You can leave all the values to their
 <p>Open your terminal and type <code>yo code</code> in it. You can leave all the values to their defaults. Here what I used for generating extension:</p>
 <p><a href="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-coverage/1-yeoman-code-generator.png"><img src="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-coverage/1-yeoman-code-generator.png" alt="Yeoman VSCode extension generator"></a></p>
 <p>After last question about initializing git repository, generator will install scaffold extension code and install all the required npm packages. Now you can navigate into the extension&rsquo;s folder and open it in VSCode:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#8be9fd;font-style:italic">cd</span> vscode-testcov
-code .
-</code></pre></div><p><a href="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-coverage/2-vscode-with-opened-extension.png"><img src="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-coverage/2-vscode-with-opened-extension.png" alt="VSCode with opened extension"></a></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">cd</span> vscode-testcov
+</span></span><span style="display:flex;"><span>code .
+</span></span></code></pre></div><p><a href="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-coverage/2-vscode-with-opened-extension.png"><img src="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-coverage/2-vscode-with-opened-extension.png" alt="VSCode with opened extension"></a></p>
 <p>Just in order the check that everything is fine, try to launch tests for your new extension. If everything is fine, you should see similar picture in your debug console:</p>
 <p><a href="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-coverage/3-vscode-run-tests.png"><img src="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-coverage/3-vscode-run-tests.png" alt="VSCode after running tests"></a></p>
 <h2 id="istanbul-for-code-coverage">Istanbul for code coverage</h2>
@@ -110,275 +110,275 @@ code .
 <p>Yet another JS code coverage tool that computes statement, line, function and branch coverage with module loader hooks to transparently add coverage when running tests. Supports all JS coverage use cases including unit tests, server side functional tests and browser tests. Built for scale.</p>
 </blockquote>
 <p>First we need to add Instabul and other utility packages to our project. Open terminal window, navigate to your project and execute following command:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">npm install istanbul remap-istanbul glob @types/glob decache --save
-</code></pre></div><p>Here is the output with packages and their versions that were installed:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">+ remap-istanbul@0.11.1
-+ istanbul@0.4.5
-+ decache@4.4.0
-+ glob@7.1.2
-+ @types/glob@5.0.35
-</code></pre></div><h2 id="reimplementing-test-runner">Reimplementing test runner</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>npm install istanbul remap-istanbul glob @types/glob decache --save
+</span></span></code></pre></div><p>Here is the output with packages and their versions that were installed:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>+ remap-istanbul@0.11.1
+</span></span><span style="display:flex;"><span>+ istanbul@0.4.5
+</span></span><span style="display:flex;"><span>+ decache@4.4.0
+</span></span><span style="display:flex;"><span>+ glob@7.1.2
+</span></span><span style="display:flex;"><span>+ @types/glob@5.0.35
+</span></span></code></pre></div><h2 id="reimplementing-test-runner">Reimplementing test runner</h2>
 <p>For launching tests of VSCode extension, VSCode itself provides test runner that does a lot of boilerplate and launches testing framework (Mocha by default). In order to have code coverage in your extension, we need to reimplement this test runner a bit, injecting additional instructions there.</p>
 <p>Now, open <code>index.ts</code> file in <code>src/test</code> folder of extension. You should see there:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#ff79c6">import</span> <span style="color:#ff79c6">*</span> <span style="color:#ff79c6">as</span> testRunner <span style="color:#ff79c6">from</span> <span style="color:#f1fa8c">&#39;vscode/lib/testrunner&#39;</span>;
-
-<span style="color:#6272a4">// You can directly control Mocha options by uncommenting the following lines
-</span><span style="color:#6272a4">// See https://github.com/mochajs/mocha/wiki/Using-mocha-programmatically#set-options for more info
-</span><span style="color:#6272a4"></span>testRunner.configure({
-    ui<span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#39;tdd&#39;</span>, 		<span style="color:#6272a4">// the TDD UI is being used in extension.test.ts (suite, test, etc.)
-</span><span style="color:#6272a4"></span>    useColors: <span style="color:#8be9fd">true</span> <span style="color:#6272a4">// colored output from test results
-</span><span style="color:#6272a4"></span>});
-
-<span style="color:#ff79c6">module</span>.exports <span style="color:#ff79c6">=</span> testRunner;
-</code></pre></div><p>This is default configuration that basically just sets settings to TDD style and enables colored output.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#ff79c6">import</span> <span style="color:#ff79c6">*</span> <span style="color:#ff79c6">as</span> testRunner <span style="color:#ff79c6">from</span> <span style="color:#f1fa8c">&#39;vscode/lib/testrunner&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">// You can directly control Mocha options by uncommenting the following lines
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">// See https://github.com/mochajs/mocha/wiki/Using-mocha-programmatically#set-options for more info
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>testRunner.configure({
+</span></span><span style="display:flex;"><span>    ui<span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#39;tdd&#39;</span>, 		<span style="color:#6272a4">// the TDD UI is being used in extension.test.ts (suite, test, etc.)
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>    useColors: <span style="color:#8be9fd">true</span> <span style="color:#6272a4">// colored output from test results
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">module</span>.exports <span style="color:#ff79c6">=</span> testRunner;
+</span></span></code></pre></div><p>This is default configuration that basically just sets settings to TDD style and enables colored output.</p>
 <p>Replace contents of this file with the following:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript"><span style="color:#f1fa8c">&#39;use strict&#39;</span>;
-
-<span style="color:#ff79c6">declare</span> <span style="color:#8be9fd;font-style:italic">var</span> <span style="color:#ff79c6">global</span><span style="color:#ff79c6">:</span> <span style="color:#8be9fd">any</span>;
-
-<span style="color:#6272a4">/* tslint:disable no-require-imports */</span>
-
-<span style="color:#ff79c6">import</span> <span style="color:#ff79c6">*</span> <span style="color:#ff79c6">as</span> fs <span style="color:#ff79c6">from</span> <span style="color:#f1fa8c">&#39;fs&#39;</span>;
-<span style="color:#ff79c6">import</span> <span style="color:#ff79c6">*</span> <span style="color:#ff79c6">as</span> glob <span style="color:#ff79c6">from</span> <span style="color:#f1fa8c">&#39;glob&#39;</span>;
-<span style="color:#ff79c6">import</span> <span style="color:#ff79c6">*</span> <span style="color:#ff79c6">as</span> paths <span style="color:#ff79c6">from</span> <span style="color:#f1fa8c">&#39;path&#39;</span>;
-
-<span style="color:#ff79c6">const</span> istanbul <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">require</span>(<span style="color:#f1fa8c">&#39;istanbul&#39;</span>);
-<span style="color:#ff79c6">const</span> Mocha <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">require</span>(<span style="color:#f1fa8c">&#39;mocha&#39;</span>);
-<span style="color:#ff79c6">const</span> remapIstanbul <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">require</span>(<span style="color:#f1fa8c">&#39;remap-istanbul&#39;</span>);
-
-<span style="color:#6272a4">// Linux: prevent a weird NPE when mocha on Linux requires the window size from the TTY
-</span><span style="color:#6272a4">// Since we are not running in a tty environment, we just implementt he method statically
-</span><span style="color:#6272a4"></span><span style="color:#ff79c6">const</span> tty <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">require</span>(<span style="color:#f1fa8c">&#39;tty&#39;</span>);
-<span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span>tty.getWindowSize) {
-    tty.getWindowSize <span style="color:#ff79c6">=</span> ()<span style="color:#ff79c6">:</span> <span style="color:#8be9fd">number</span>[] <span style="color:#ff79c6">=&gt;</span> {
-        <span style="color:#ff79c6">return</span> [<span style="color:#bd93f9">80</span>, <span style="color:#bd93f9">75</span>];
-    };
-}
-
-<span style="color:#8be9fd;font-style:italic">let</span> mocha <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Mocha({
-    ui<span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#39;tdd&#39;</span>,
-    useColors: <span style="color:#8be9fd">true</span>,
-});
-
-<span style="color:#8be9fd;font-style:italic">function</span> configure(mochaOpts: <span style="color:#8be9fd">any</span>)<span style="color:#ff79c6">:</span> <span style="color:#ff79c6">void</span> {
-    mocha <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Mocha(mochaOpts);
-}
-exports.configure <span style="color:#ff79c6">=</span> configure;
-
-<span style="color:#8be9fd;font-style:italic">function</span> _mkDirIfExists(dir: <span style="color:#8be9fd">string</span>)<span style="color:#ff79c6">:</span> <span style="color:#ff79c6">void</span> {
-    <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span>fs.existsSync(dir)) {
-        fs.mkdirSync(dir);
-    }
-}
-
-<span style="color:#8be9fd;font-style:italic">function</span> _readCoverOptions(testsRoot: <span style="color:#8be9fd">string</span>)<span style="color:#ff79c6">:</span> ITestRunnerOptions <span style="color:#ff79c6">|</span> <span style="color:#ff79c6">undefined</span> {
-    <span style="color:#ff79c6">const</span> coverConfigPath <span style="color:#ff79c6">=</span> paths.join(testsRoot, <span style="color:#f1fa8c">&#39;..&#39;</span>, <span style="color:#f1fa8c">&#39;..&#39;</span>, <span style="color:#f1fa8c">&#39;coverconfig.json&#39;</span>);
-    <span style="color:#ff79c6">if</span> (fs.existsSync(coverConfigPath)) {
-        <span style="color:#ff79c6">const</span> configContent <span style="color:#ff79c6">=</span> fs.readFileSync(coverConfigPath, <span style="color:#f1fa8c">&#39;utf-8&#39;</span>);
-        <span style="color:#ff79c6">return</span> JSON.parse(configContent);
-    }
-    <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">undefined</span>;
-}
-
-<span style="color:#8be9fd;font-style:italic">function</span> run(testsRoot: <span style="color:#8be9fd">string</span>, clb: <span style="color:#8be9fd">any</span>)<span style="color:#ff79c6">:</span> <span style="color:#8be9fd">any</span> {
-    <span style="color:#6272a4">// Read configuration for the coverage file
-</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">const</span> coverOptions <span style="color:#ff79c6">=</span> _readCoverOptions(testsRoot);
-    <span style="color:#ff79c6">if</span> (coverOptions <span style="color:#ff79c6">&amp;&amp;</span> coverOptions.enabled) {
-        <span style="color:#6272a4">// Setup coverage pre-test, including post-test hook to report
-</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">const</span> coverageRunner <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> CoverageRunner(coverOptions, testsRoot);
-        coverageRunner.setupCoverage();
-    }
-
-    <span style="color:#6272a4">// Glob test files
-</span><span style="color:#6272a4"></span>    glob(<span style="color:#f1fa8c">&#39;**/**.test.js&#39;</span>, { cwd: <span style="color:#8be9fd">testsRoot</span> }, (error, files)<span style="color:#ff79c6">:</span> <span style="color:#8be9fd">any</span> <span style="color:#ff79c6">=&gt;</span> {
-        <span style="color:#ff79c6">if</span> (error) {
-            <span style="color:#ff79c6">return</span> clb(error);
-        }
-        <span style="color:#ff79c6">try</span> {
-            <span style="color:#6272a4">// Fill into Mocha
-</span><span style="color:#6272a4"></span>            files.forEach((f)<span style="color:#ff79c6">:</span> Mocha <span style="color:#ff79c6">=&gt;</span> mocha.addFile(paths.join(testsRoot, f)));
-            <span style="color:#6272a4">// Run the tests
-</span><span style="color:#6272a4"></span>            <span style="color:#8be9fd;font-style:italic">let</span> failureCount <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>;
-
-            mocha.run()
-                .on(<span style="color:#f1fa8c">&#39;fail&#39;</span>, () <span style="color:#ff79c6">=&gt;</span> failureCount<span style="color:#ff79c6">++</span>)
-                .on(<span style="color:#f1fa8c">&#39;end&#39;</span>, () <span style="color:#ff79c6">=&gt;</span> clb(<span style="color:#ff79c6">undefined</span>, failureCount)
-            );
-        } <span style="color:#ff79c6">catch</span> (error) {
-            <span style="color:#ff79c6">return</span> clb(error);
-        }
-    });
-}
-exports.run <span style="color:#ff79c6">=</span> run;
-
-<span style="color:#ff79c6">interface</span> ITestRunnerOptions {
-    enabled?: <span style="color:#8be9fd">boolean</span>;
-    relativeCoverageDir: <span style="color:#8be9fd">string</span>;
-    relativeSourcePath: <span style="color:#8be9fd">string</span>;
-    ignorePatterns: <span style="color:#8be9fd">string</span>[];
-    includePid?: <span style="color:#8be9fd">boolean</span>;
-    reports?: <span style="color:#8be9fd">string</span>[];
-    verbose?: <span style="color:#8be9fd">boolean</span>;
-}
-
-<span style="color:#ff79c6">class</span> CoverageRunner {
-
-    <span style="color:#ff79c6">private</span> coverageVar: <span style="color:#8be9fd">string</span> <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#39;$$cov_&#39;</span> <span style="color:#ff79c6">+</span> <span style="color:#ff79c6">new</span> <span style="color:#8be9fd;font-style:italic">Date</span>().getTime() <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#39;$$&#39;</span>;
-    <span style="color:#ff79c6">private</span> transformer: <span style="color:#8be9fd">any</span> <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">undefined</span>;
-    <span style="color:#ff79c6">private</span> matchFn: <span style="color:#8be9fd">any</span> <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">undefined</span>;
-    <span style="color:#ff79c6">private</span> instrumenter: <span style="color:#8be9fd">any</span> <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">undefined</span>;
-
-    <span style="color:#ff79c6">constructor</span>(<span style="color:#ff79c6">private</span> options: <span style="color:#8be9fd">ITestRunnerOptions</span>, <span style="color:#ff79c6">private</span> testsRoot: <span style="color:#8be9fd">string</span>) {
-        <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span>options.relativeSourcePath) {
-            <span style="color:#ff79c6">return</span>;
-        }
-    }
-
-    <span style="color:#ff79c6">public</span> setupCoverage()<span style="color:#ff79c6">:</span> <span style="color:#ff79c6">void</span> {
-        <span style="color:#6272a4">// Set up Code Coverage, hooking require so that instrumented code is returned
-</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">const</span> self <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>;
-        self.instrumenter <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> istanbul.Instrumenter({ coverageVariable: <span style="color:#8be9fd">self.coverageVar</span> });
-        <span style="color:#ff79c6">const</span> sourceRoot <span style="color:#ff79c6">=</span> paths.join(self.testsRoot, self.options.relativeSourcePath);
-
-        <span style="color:#6272a4">// Glob source files
-</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">const</span> srcFiles <span style="color:#ff79c6">=</span> glob.sync(<span style="color:#f1fa8c">&#39;**/**.js&#39;</span>, {
-            cwd: <span style="color:#8be9fd">sourceRoot</span>,
-            ignore: <span style="color:#8be9fd">self.options.ignorePatterns</span>,
-        });
-
-        <span style="color:#6272a4">// Create a match function - taken from the run-with-cover.js in istanbul.
-</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">const</span> decache <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">require</span>(<span style="color:#f1fa8c">&#39;decache&#39;</span>);
-        <span style="color:#ff79c6">const</span> fileMap: <span style="color:#8be9fd">any</span> <span style="color:#ff79c6">=</span> {};
-        srcFiles.forEach((file) <span style="color:#ff79c6">=&gt;</span> {
-            <span style="color:#ff79c6">const</span> fullPath <span style="color:#ff79c6">=</span> paths.join(sourceRoot, file);
-            fileMap[fullPath] <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">true</span>;
-
-            <span style="color:#6272a4">// On Windows, extension is loaded pre-test hooks and this mean we lose
-</span><span style="color:#6272a4"></span>            <span style="color:#6272a4">// our chance to hook the Require call. In order to instrument the code
-</span><span style="color:#6272a4"></span>            <span style="color:#6272a4">// we have to decache the JS file so on next load it gets instrumented.
-</span><span style="color:#6272a4"></span>            <span style="color:#6272a4">// This doesn&#39;t impact tests, but is a concern if we had some integration
-</span><span style="color:#6272a4"></span>            <span style="color:#6272a4">// tests that relied on VSCode accessing our module since there could be
-</span><span style="color:#6272a4"></span>            <span style="color:#6272a4">// some shared global state that we lose.
-</span><span style="color:#6272a4"></span>            decache(fullPath);
-        });
-
-        self.matchFn <span style="color:#ff79c6">=</span> (file: <span style="color:#8be9fd">string</span>)<span style="color:#ff79c6">:</span> <span style="color:#ff79c6">boolean</span> <span style="color:#ff79c6">=&gt;</span> fileMap[file];
-        self.matchFn.files <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">Object</span>.keys(fileMap);
-
-        <span style="color:#6272a4">// Hook up to the Require function so that when this is called, if any of our source files
-</span><span style="color:#6272a4"></span>        <span style="color:#6272a4">// are required, the instrumented version is pulled in instead. These instrumented versions
-</span><span style="color:#6272a4"></span>        <span style="color:#6272a4">// write to a global coverage variable with hit counts whenever they are accessed
-</span><span style="color:#6272a4"></span>        self.transformer <span style="color:#ff79c6">=</span> self.instrumenter.instrumentSync.bind(self.instrumenter);
-        <span style="color:#ff79c6">const</span> hookOpts <span style="color:#ff79c6">=</span> { verbose: <span style="color:#8be9fd">false</span>, extensions<span style="color:#ff79c6">:</span> [<span style="color:#f1fa8c">&#39;.js&#39;</span>] };
-        istanbul.hook.hookRequire(self.matchFn, self.transformer, hookOpts);
-
-        <span style="color:#6272a4">// initialize the global variable to stop mocha from complaining about leaks
-</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">global</span>[self.coverageVar] <span style="color:#ff79c6">=</span> {};
-
-        <span style="color:#6272a4">// Hook the process exit event to handle reporting
-</span><span style="color:#6272a4"></span>        <span style="color:#6272a4">// Only report coverage if the process is exiting successfully
-</span><span style="color:#6272a4"></span>        process.on(<span style="color:#f1fa8c">&#39;exit&#39;</span>, (code: <span style="color:#8be9fd">number</span>) <span style="color:#ff79c6">=&gt;</span> {
-            self.reportCoverage();
-            process.exitCode <span style="color:#ff79c6">=</span> code;
-        });
-    }
-
-    <span style="color:#6272a4">/**
-</span><span style="color:#6272a4">     * Writes a coverage report.
-</span><span style="color:#6272a4">     * Note that as this is called in the process exit callback, all calls must be synchronous.
-</span><span style="color:#6272a4">     *
-</span><span style="color:#6272a4">     * @returns {void}
-</span><span style="color:#6272a4">     *
-</span><span style="color:#6272a4">     * @memberOf CoverageRunner
-</span><span style="color:#6272a4">     */</span>
-    <span style="color:#ff79c6">public</span> reportCoverage()<span style="color:#ff79c6">:</span> <span style="color:#ff79c6">void</span> {
-        <span style="color:#ff79c6">const</span> self <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>;
-        istanbul.hook.unhookRequire();
-        <span style="color:#8be9fd;font-style:italic">let</span> cov: <span style="color:#8be9fd">any</span>;
-        <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">typeof</span> <span style="color:#ff79c6">global</span>[self.coverageVar] <span style="color:#ff79c6">===</span> <span style="color:#f1fa8c">&#39;undefined&#39;</span> <span style="color:#ff79c6">||</span> <span style="color:#8be9fd;font-style:italic">Object</span>.keys(<span style="color:#ff79c6">global</span>[self.coverageVar]).length <span style="color:#ff79c6">===</span> <span style="color:#bd93f9">0</span>) {
-            console.error(<span style="color:#f1fa8c">&#39;No coverage information was collected, exit without writing coverage information&#39;</span>);
-            <span style="color:#ff79c6">return</span>;
-        } <span style="color:#ff79c6">else</span> {
-            cov <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">global</span>[self.coverageVar];
-        }
-
-        <span style="color:#6272a4">// TODO consider putting this under a conditional flag
-</span><span style="color:#6272a4"></span>        <span style="color:#6272a4">// Files that are not touched by code ran by the test runner is manually instrumented, to
-</span><span style="color:#6272a4"></span>        <span style="color:#6272a4">// illustrate the missing coverage.
-</span><span style="color:#6272a4"></span>        self.matchFn.files.forEach((file: <span style="color:#8be9fd">any</span>) <span style="color:#ff79c6">=&gt;</span> {
-            <span style="color:#ff79c6">if</span> (cov[file]) {
-                <span style="color:#ff79c6">return</span>;
-            }
-            self.transformer(fs.readFileSync(file, <span style="color:#f1fa8c">&#39;utf-8&#39;</span>), file);
-
-            <span style="color:#6272a4">// When instrumenting the code, istanbul will give each FunctionDeclaration a value of 1 in coverState.s,
-</span><span style="color:#6272a4"></span>            <span style="color:#6272a4">// presumably to compensate for function hoisting. We need to reset this, as the function was not hoisted,
-</span><span style="color:#6272a4"></span>            <span style="color:#6272a4">// as it was never loaded.
-</span><span style="color:#6272a4"></span>            <span style="color:#8be9fd;font-style:italic">Object</span>.keys(self.instrumenter.coverState.s).forEach((key) <span style="color:#ff79c6">=&gt;</span> {
-                self.instrumenter.coverState.s[key] <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>;
-            });
-
-            cov[file] <span style="color:#ff79c6">=</span> self.instrumenter.coverState;
-        });
-
-        <span style="color:#6272a4">// TODO Allow config of reporting directory with
-</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">const</span> reportingDir <span style="color:#ff79c6">=</span> paths.join(self.testsRoot, self.options.relativeCoverageDir);
-        <span style="color:#ff79c6">const</span> includePid <span style="color:#ff79c6">=</span> self.options.includePid;
-        <span style="color:#ff79c6">const</span> pidExt <span style="color:#ff79c6">=</span> includePid <span style="color:#ff79c6">?</span> (<span style="color:#f1fa8c">&#39;-&#39;</span> <span style="color:#ff79c6">+</span> process.pid) <span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#39;&#39;</span>;
-        <span style="color:#ff79c6">const</span> coverageFile <span style="color:#ff79c6">=</span> paths.resolve(reportingDir, <span style="color:#f1fa8c">&#39;coverage&#39;</span> <span style="color:#ff79c6">+</span> pidExt <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#39;.json&#39;</span>);
-
-        <span style="color:#6272a4">// yes, do this again since some test runners could clean the dir initially created
-</span><span style="color:#6272a4"></span>        _mkDirIfExists(reportingDir);
-
-        fs.writeFileSync(coverageFile, JSON.stringify(cov), <span style="color:#f1fa8c">&#39;utf8&#39;</span>);
-
-        <span style="color:#ff79c6">const</span> remappedCollector <span style="color:#ff79c6">=</span> remapIstanbul.remap(cov, {
-            warn<span style="color:#ff79c6">:</span> (warning: <span style="color:#8be9fd">any</span>) <span style="color:#ff79c6">=&gt;</span> {
-                <span style="color:#6272a4">// We expect some warnings as any JS file without a typescript mapping will cause this.
-</span><span style="color:#6272a4"></span>                <span style="color:#6272a4">// By default, we&#39;ll skip printing these to the console as it clutters it up
-</span><span style="color:#6272a4"></span>                <span style="color:#ff79c6">if</span> (self.options.verbose) {
-                    console.warn(warning);
-                }
-            }
-        });
-
-        <span style="color:#ff79c6">const</span> reporter <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> istanbul.Reporter(<span style="color:#ff79c6">undefined</span>, reportingDir);
-        <span style="color:#ff79c6">const</span> reportTypes <span style="color:#ff79c6">=</span> (self.options.reports <span style="color:#ff79c6">instanceof</span> <span style="color:#8be9fd;font-style:italic">Array</span>) <span style="color:#ff79c6">?</span> self.options.reports <span style="color:#ff79c6">:</span> [<span style="color:#f1fa8c">&#39;lcov&#39;</span>];
-        reporter.addAll(reportTypes);
-        reporter.write(remappedCollector, <span style="color:#ff79c6">true</span>, () <span style="color:#ff79c6">=&gt;</span> {
-            console.log(<span style="color:#f1fa8c">`reports written to </span><span style="color:#f1fa8c">${</span>reportingDir<span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">`</span>);
-        });
-    }
-}
-</code></pre></div><p>Originally this code is taken from <a href="https://github.com/codecov/example-typescript-vscode-extension/blob/master/test/index.ts">here</a>, but I&rsquo;ve made some changes to be compatible with strict mode.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span><span style="color:#f1fa8c">&#39;use strict&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">declare</span> <span style="color:#8be9fd;font-style:italic">var</span> <span style="color:#ff79c6">global</span><span style="color:#ff79c6">:</span> <span style="color:#8be9fd">any</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">/* tslint:disable no-require-imports */</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">import</span> <span style="color:#ff79c6">*</span> <span style="color:#ff79c6">as</span> fs <span style="color:#ff79c6">from</span> <span style="color:#f1fa8c">&#39;fs&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">import</span> <span style="color:#ff79c6">*</span> <span style="color:#ff79c6">as</span> glob <span style="color:#ff79c6">from</span> <span style="color:#f1fa8c">&#39;glob&#39;</span>;
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">import</span> <span style="color:#ff79c6">*</span> <span style="color:#ff79c6">as</span> paths <span style="color:#ff79c6">from</span> <span style="color:#f1fa8c">&#39;path&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">const</span> istanbul <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">require</span>(<span style="color:#f1fa8c">&#39;istanbul&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">const</span> Mocha <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">require</span>(<span style="color:#f1fa8c">&#39;mocha&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">const</span> remapIstanbul <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">require</span>(<span style="color:#f1fa8c">&#39;remap-istanbul&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">// Linux: prevent a weird NPE when mocha on Linux requires the window size from the TTY
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">// Since we are not running in a tty environment, we just implementt he method statically
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span><span style="color:#ff79c6">const</span> tty <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">require</span>(<span style="color:#f1fa8c">&#39;tty&#39;</span>);
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span>tty.getWindowSize) {
+</span></span><span style="display:flex;"><span>    tty.getWindowSize <span style="color:#ff79c6">=</span> ()<span style="color:#ff79c6">:</span> <span style="color:#8be9fd">number</span>[] <span style="color:#ff79c6">=&gt;</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">return</span> [<span style="color:#bd93f9">80</span>, <span style="color:#bd93f9">75</span>];
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">let</span> mocha <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Mocha({
+</span></span><span style="display:flex;"><span>    ui<span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#39;tdd&#39;</span>,
+</span></span><span style="display:flex;"><span>    useColors: <span style="color:#8be9fd">true</span>,
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">function</span> configure(mochaOpts: <span style="color:#8be9fd">any</span>)<span style="color:#ff79c6">:</span> <span style="color:#ff79c6">void</span> {
+</span></span><span style="display:flex;"><span>    mocha <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Mocha(mochaOpts);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>exports.configure <span style="color:#ff79c6">=</span> configure;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">function</span> _mkDirIfExists(dir: <span style="color:#8be9fd">string</span>)<span style="color:#ff79c6">:</span> <span style="color:#ff79c6">void</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span>fs.existsSync(dir)) {
+</span></span><span style="display:flex;"><span>        fs.mkdirSync(dir);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">function</span> _readCoverOptions(testsRoot: <span style="color:#8be9fd">string</span>)<span style="color:#ff79c6">:</span> ITestRunnerOptions <span style="color:#ff79c6">|</span> <span style="color:#ff79c6">undefined</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">const</span> coverConfigPath <span style="color:#ff79c6">=</span> paths.join(testsRoot, <span style="color:#f1fa8c">&#39;..&#39;</span>, <span style="color:#f1fa8c">&#39;..&#39;</span>, <span style="color:#f1fa8c">&#39;coverconfig.json&#39;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span> (fs.existsSync(coverConfigPath)) {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">const</span> configContent <span style="color:#ff79c6">=</span> fs.readFileSync(coverConfigPath, <span style="color:#f1fa8c">&#39;utf-8&#39;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">return</span> JSON.parse(configContent);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">undefined</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">function</span> run(testsRoot: <span style="color:#8be9fd">string</span>, clb: <span style="color:#8be9fd">any</span>)<span style="color:#ff79c6">:</span> <span style="color:#8be9fd">any</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// Read configuration for the coverage file
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">const</span> coverOptions <span style="color:#ff79c6">=</span> _readCoverOptions(testsRoot);
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">if</span> (coverOptions <span style="color:#ff79c6">&amp;&amp;</span> coverOptions.enabled) {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// Setup coverage pre-test, including post-test hook to report
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">const</span> coverageRunner <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> CoverageRunner(coverOptions, testsRoot);
+</span></span><span style="display:flex;"><span>        coverageRunner.setupCoverage();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">// Glob test files
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>    glob(<span style="color:#f1fa8c">&#39;**/**.test.js&#39;</span>, { cwd: <span style="color:#8be9fd">testsRoot</span> }, (error, files)<span style="color:#ff79c6">:</span> <span style="color:#8be9fd">any</span> <span style="color:#ff79c6">=&gt;</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (error) {
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">return</span> clb(error);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">try</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// Fill into Mocha
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>            files.forEach((f)<span style="color:#ff79c6">:</span> Mocha <span style="color:#ff79c6">=&gt;</span> mocha.addFile(paths.join(testsRoot, f)));
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// Run the tests
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>            <span style="color:#8be9fd;font-style:italic">let</span> failureCount <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            mocha.run()
+</span></span><span style="display:flex;"><span>                .on(<span style="color:#f1fa8c">&#39;fail&#39;</span>, () <span style="color:#ff79c6">=&gt;</span> failureCount<span style="color:#ff79c6">++</span>)
+</span></span><span style="display:flex;"><span>                .on(<span style="color:#f1fa8c">&#39;end&#39;</span>, () <span style="color:#ff79c6">=&gt;</span> clb(<span style="color:#ff79c6">undefined</span>, failureCount)
+</span></span><span style="display:flex;"><span>            );
+</span></span><span style="display:flex;"><span>        } <span style="color:#ff79c6">catch</span> (error) {
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">return</span> clb(error);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>exports.run <span style="color:#ff79c6">=</span> run;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">interface</span> ITestRunnerOptions {
+</span></span><span style="display:flex;"><span>    enabled?: <span style="color:#8be9fd">boolean</span>;
+</span></span><span style="display:flex;"><span>    relativeCoverageDir: <span style="color:#8be9fd">string</span>;
+</span></span><span style="display:flex;"><span>    relativeSourcePath: <span style="color:#8be9fd">string</span>;
+</span></span><span style="display:flex;"><span>    ignorePatterns: <span style="color:#8be9fd">string</span>[];
+</span></span><span style="display:flex;"><span>    includePid?: <span style="color:#8be9fd">boolean</span>;
+</span></span><span style="display:flex;"><span>    reports?: <span style="color:#8be9fd">string</span>[];
+</span></span><span style="display:flex;"><span>    verbose?: <span style="color:#8be9fd">boolean</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">class</span> CoverageRunner {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">private</span> coverageVar: <span style="color:#8be9fd">string</span> <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#39;$$cov_&#39;</span> <span style="color:#ff79c6">+</span> <span style="color:#ff79c6">new</span> <span style="color:#8be9fd;font-style:italic">Date</span>().getTime() <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#39;$$&#39;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">private</span> transformer: <span style="color:#8be9fd">any</span> <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">undefined</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">private</span> matchFn: <span style="color:#8be9fd">any</span> <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">undefined</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">private</span> instrumenter: <span style="color:#8be9fd">any</span> <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">undefined</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">constructor</span>(<span style="color:#ff79c6">private</span> options: <span style="color:#8be9fd">ITestRunnerOptions</span>, <span style="color:#ff79c6">private</span> testsRoot: <span style="color:#8be9fd">string</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">!</span>options.relativeSourcePath) {
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">return</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">public</span> setupCoverage()<span style="color:#ff79c6">:</span> <span style="color:#ff79c6">void</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// Set up Code Coverage, hooking require so that instrumented code is returned
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">const</span> self <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>;
+</span></span><span style="display:flex;"><span>        self.instrumenter <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> istanbul.Instrumenter({ coverageVariable: <span style="color:#8be9fd">self.coverageVar</span> });
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">const</span> sourceRoot <span style="color:#ff79c6">=</span> paths.join(self.testsRoot, self.options.relativeSourcePath);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// Glob source files
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">const</span> srcFiles <span style="color:#ff79c6">=</span> glob.sync(<span style="color:#f1fa8c">&#39;**/**.js&#39;</span>, {
+</span></span><span style="display:flex;"><span>            cwd: <span style="color:#8be9fd">sourceRoot</span>,
+</span></span><span style="display:flex;"><span>            ignore: <span style="color:#8be9fd">self.options.ignorePatterns</span>,
+</span></span><span style="display:flex;"><span>        });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// Create a match function - taken from the run-with-cover.js in istanbul.
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">const</span> decache <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">require</span>(<span style="color:#f1fa8c">&#39;decache&#39;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">const</span> fileMap: <span style="color:#8be9fd">any</span> <span style="color:#ff79c6">=</span> {};
+</span></span><span style="display:flex;"><span>        srcFiles.forEach((file) <span style="color:#ff79c6">=&gt;</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">const</span> fullPath <span style="color:#ff79c6">=</span> paths.join(sourceRoot, file);
+</span></span><span style="display:flex;"><span>            fileMap[fullPath] <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">true</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// On Windows, extension is loaded pre-test hooks and this mean we lose
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>            <span style="color:#6272a4">// our chance to hook the Require call. In order to instrument the code
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>            <span style="color:#6272a4">// we have to decache the JS file so on next load it gets instrumented.
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>            <span style="color:#6272a4">// This doesn&#39;t impact tests, but is a concern if we had some integration
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>            <span style="color:#6272a4">// tests that relied on VSCode accessing our module since there could be
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>            <span style="color:#6272a4">// some shared global state that we lose.
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>            decache(fullPath);
+</span></span><span style="display:flex;"><span>        });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        self.matchFn <span style="color:#ff79c6">=</span> (file: <span style="color:#8be9fd">string</span>)<span style="color:#ff79c6">:</span> <span style="color:#ff79c6">boolean</span> <span style="color:#ff79c6">=&gt;</span> fileMap[file];
+</span></span><span style="display:flex;"><span>        self.matchFn.files <span style="color:#ff79c6">=</span> <span style="color:#8be9fd;font-style:italic">Object</span>.keys(fileMap);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// Hook up to the Require function so that when this is called, if any of our source files
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>        <span style="color:#6272a4">// are required, the instrumented version is pulled in instead. These instrumented versions
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>        <span style="color:#6272a4">// write to a global coverage variable with hit counts whenever they are accessed
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>        self.transformer <span style="color:#ff79c6">=</span> self.instrumenter.instrumentSync.bind(self.instrumenter);
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">const</span> hookOpts <span style="color:#ff79c6">=</span> { verbose: <span style="color:#8be9fd">false</span>, extensions<span style="color:#ff79c6">:</span> [<span style="color:#f1fa8c">&#39;.js&#39;</span>] };
+</span></span><span style="display:flex;"><span>        istanbul.hook.hookRequire(self.matchFn, self.transformer, hookOpts);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// initialize the global variable to stop mocha from complaining about leaks
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">global</span>[self.coverageVar] <span style="color:#ff79c6">=</span> {};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// Hook the process exit event to handle reporting
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>        <span style="color:#6272a4">// Only report coverage if the process is exiting successfully
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>        process.on(<span style="color:#f1fa8c">&#39;exit&#39;</span>, (code: <span style="color:#8be9fd">number</span>) <span style="color:#ff79c6">=&gt;</span> {
+</span></span><span style="display:flex;"><span>            self.reportCoverage();
+</span></span><span style="display:flex;"><span>            process.exitCode <span style="color:#ff79c6">=</span> code;
+</span></span><span style="display:flex;"><span>        });
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#6272a4">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">     * Writes a coverage report.
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">     * Note that as this is called in the process exit callback, all calls must be synchronous.
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">     *
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">     * @returns {void}
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">     *
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">     * @memberOf CoverageRunner
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">public</span> reportCoverage()<span style="color:#ff79c6">:</span> <span style="color:#ff79c6">void</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">const</span> self <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span>;
+</span></span><span style="display:flex;"><span>        istanbul.hook.unhookRequire();
+</span></span><span style="display:flex;"><span>        <span style="color:#8be9fd;font-style:italic">let</span> cov: <span style="color:#8be9fd">any</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">if</span> (<span style="color:#ff79c6">typeof</span> <span style="color:#ff79c6">global</span>[self.coverageVar] <span style="color:#ff79c6">===</span> <span style="color:#f1fa8c">&#39;undefined&#39;</span> <span style="color:#ff79c6">||</span> <span style="color:#8be9fd;font-style:italic">Object</span>.keys(<span style="color:#ff79c6">global</span>[self.coverageVar]).length <span style="color:#ff79c6">===</span> <span style="color:#bd93f9">0</span>) {
+</span></span><span style="display:flex;"><span>            console.error(<span style="color:#f1fa8c">&#39;No coverage information was collected, exit without writing coverage information&#39;</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">return</span>;
+</span></span><span style="display:flex;"><span>        } <span style="color:#ff79c6">else</span> {
+</span></span><span style="display:flex;"><span>            cov <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">global</span>[self.coverageVar];
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// TODO consider putting this under a conditional flag
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>        <span style="color:#6272a4">// Files that are not touched by code ran by the test runner is manually instrumented, to
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>        <span style="color:#6272a4">// illustrate the missing coverage.
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>        self.matchFn.files.forEach((file: <span style="color:#8be9fd">any</span>) <span style="color:#ff79c6">=&gt;</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> (cov[file]) {
+</span></span><span style="display:flex;"><span>                <span style="color:#ff79c6">return</span>;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            self.transformer(fs.readFileSync(file, <span style="color:#f1fa8c">&#39;utf-8&#39;</span>), file);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#6272a4">// When instrumenting the code, istanbul will give each FunctionDeclaration a value of 1 in coverState.s,
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>            <span style="color:#6272a4">// presumably to compensate for function hoisting. We need to reset this, as the function was not hoisted,
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>            <span style="color:#6272a4">// as it was never loaded.
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>            <span style="color:#8be9fd;font-style:italic">Object</span>.keys(self.instrumenter.coverState.s).forEach((key) <span style="color:#ff79c6">=&gt;</span> {
+</span></span><span style="display:flex;"><span>                self.instrumenter.coverState.s[key] <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span>;
+</span></span><span style="display:flex;"><span>            });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            cov[file] <span style="color:#ff79c6">=</span> self.instrumenter.coverState;
+</span></span><span style="display:flex;"><span>        });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// TODO Allow config of reporting directory with
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">const</span> reportingDir <span style="color:#ff79c6">=</span> paths.join(self.testsRoot, self.options.relativeCoverageDir);
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">const</span> includePid <span style="color:#ff79c6">=</span> self.options.includePid;
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">const</span> pidExt <span style="color:#ff79c6">=</span> includePid <span style="color:#ff79c6">?</span> (<span style="color:#f1fa8c">&#39;-&#39;</span> <span style="color:#ff79c6">+</span> process.pid) <span style="color:#ff79c6">:</span> <span style="color:#f1fa8c">&#39;&#39;</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">const</span> coverageFile <span style="color:#ff79c6">=</span> paths.resolve(reportingDir, <span style="color:#f1fa8c">&#39;coverage&#39;</span> <span style="color:#ff79c6">+</span> pidExt <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#39;.json&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#6272a4">// yes, do this again since some test runners could clean the dir initially created
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>        _mkDirIfExists(reportingDir);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        fs.writeFileSync(coverageFile, JSON.stringify(cov), <span style="color:#f1fa8c">&#39;utf8&#39;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">const</span> remappedCollector <span style="color:#ff79c6">=</span> remapIstanbul.remap(cov, {
+</span></span><span style="display:flex;"><span>            warn<span style="color:#ff79c6">:</span> (warning: <span style="color:#8be9fd">any</span>) <span style="color:#ff79c6">=&gt;</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#6272a4">// We expect some warnings as any JS file without a typescript mapping will cause this.
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>                <span style="color:#6272a4">// By default, we&#39;ll skip printing these to the console as it clutters it up
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>                <span style="color:#ff79c6">if</span> (self.options.verbose) {
+</span></span><span style="display:flex;"><span>                    console.warn(warning);
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">const</span> reporter <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> istanbul.Reporter(<span style="color:#ff79c6">undefined</span>, reportingDir);
+</span></span><span style="display:flex;"><span>        <span style="color:#ff79c6">const</span> reportTypes <span style="color:#ff79c6">=</span> (self.options.reports <span style="color:#ff79c6">instanceof</span> <span style="color:#8be9fd;font-style:italic">Array</span>) <span style="color:#ff79c6">?</span> self.options.reports <span style="color:#ff79c6">:</span> [<span style="color:#f1fa8c">&#39;lcov&#39;</span>];
+</span></span><span style="display:flex;"><span>        reporter.addAll(reportTypes);
+</span></span><span style="display:flex;"><span>        reporter.write(remappedCollector, <span style="color:#ff79c6">true</span>, () <span style="color:#ff79c6">=&gt;</span> {
+</span></span><span style="display:flex;"><span>            console.log(<span style="color:#f1fa8c">`reports written to </span><span style="color:#f1fa8c">${</span>reportingDir<span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">`</span>);
+</span></span><span style="display:flex;"><span>        });
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Originally this code is taken from <a href="https://github.com/codecov/example-typescript-vscode-extension/blob/master/test/index.ts">here</a>, but I&rsquo;ve made some changes to be compatible with strict mode.</p>
 <p>Also, you need to provide configuration for the Istanbul. Create file <code>coverconfig.json</code> in the root of your project with the following content:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
-    <span style="color:#ff79c6">&#34;enabled&#34;</span>: <span style="color:#ff79c6">true</span>,
-    <span style="color:#ff79c6">&#34;relativeSourcePath&#34;</span>: <span style="color:#f1fa8c">&#34;../src&#34;</span>,
-    <span style="color:#ff79c6">&#34;relativeCoverageDir&#34;</span>: <span style="color:#f1fa8c">&#34;../../coverage&#34;</span>,
-    <span style="color:#ff79c6">&#34;ignorePatterns&#34;</span>: [
-        <span style="color:#f1fa8c">&#34;**/node_modules/**&#34;</span>
-    ],
-    <span style="color:#ff79c6">&#34;includePid&#34;</span>: <span style="color:#ff79c6">false</span>,
-    <span style="color:#ff79c6">&#34;reports&#34;</span>: [
-        <span style="color:#f1fa8c">&#34;html&#34;</span>,
-        <span style="color:#f1fa8c">&#34;lcov&#34;</span>,
-        <span style="color:#f1fa8c">&#34;text-summary&#34;</span>
-    ],
-    <span style="color:#ff79c6">&#34;verbose&#34;</span>: <span style="color:#ff79c6">false</span>
-}
-</code></pre></div><p>Now, you&rsquo;re ready to go. Try to launch tests once again and see the results. If you were following the instructions, you should see the message <code>No coverage information was collected, exit without writing coverage information</code> after your tests execution output. What?! Why?! Well, no coverage information was collected because default test doesn&rsquo;t execute any functions from the extension. You can read this message more like <code>There was nothing to collect</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">&#34;enabled&#34;</span>: <span style="color:#ff79c6">true</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">&#34;relativeSourcePath&#34;</span>: <span style="color:#f1fa8c">&#34;../src&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">&#34;relativeCoverageDir&#34;</span>: <span style="color:#f1fa8c">&#34;../../coverage&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">&#34;ignorePatterns&#34;</span>: [
+</span></span><span style="display:flex;"><span>        <span style="color:#f1fa8c">&#34;**/node_modules/**&#34;</span>
+</span></span><span style="display:flex;"><span>    ],
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">&#34;includePid&#34;</span>: <span style="color:#ff79c6">false</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">&#34;reports&#34;</span>: [
+</span></span><span style="display:flex;"><span>        <span style="color:#f1fa8c">&#34;html&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f1fa8c">&#34;lcov&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#f1fa8c">&#34;text-summary&#34;</span>
+</span></span><span style="display:flex;"><span>    ],
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">&#34;verbose&#34;</span>: <span style="color:#ff79c6">false</span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Now, you&rsquo;re ready to go. Try to launch tests once again and see the results. If you were following the instructions, you should see the message <code>No coverage information was collected, exit without writing coverage information</code> after your tests execution output. What?! Why?! Well, no coverage information was collected because default test doesn&rsquo;t execute any functions from the extension. You can read this message more like <code>There was nothing to collect</code>.</p>
 <p>Change your <code>extension.test.ts</code> file to execute at least something that&rsquo;s related with your extension. Change the body of <code>Something 1</code> test to this:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-typescript" data-lang="typescript">vscode.commands.executeCommand(<span style="color:#f1fa8c">&#34;extension.sayHello&#34;</span>);
-</code></pre></div><p>and fix your imports so code would be compilable and then run your tests once again. After all that fixes you would see the report:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#ff79c6">===============================</span> Coverage <span style="color:#8be9fd;font-style:italic">summary</span> <span style="color:#ff79c6">===============================</span>
-Statements   : 6.54% <span style="color:#ff79c6">(</span> 7/107 <span style="color:#ff79c6">)</span>
-Branches     : 0% <span style="color:#ff79c6">(</span> 0/26 <span style="color:#ff79c6">)</span>
-Functions    : 9.09% <span style="color:#ff79c6">(</span> 1/11 <span style="color:#ff79c6">)</span>
-Lines        : 6.73% <span style="color:#ff79c6">(</span> 7/104 <span style="color:#ff79c6">)</span>
-<span style="color:#ff79c6">================================================================================</span>
-reports written to /Users/rpeshkov/Developer/vscode-extensions/vscode-testcov/coverage
-</code></pre></div><p>Yay! All the information related to code coverage was saved to <code>coverage</code> folder in the root of your extension. You now can open <code>index.html</code> file there to see HTML-based report.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-typescript" data-lang="typescript"><span style="display:flex;"><span>vscode.commands.executeCommand(<span style="color:#f1fa8c">&#34;extension.sayHello&#34;</span>);
+</span></span></code></pre></div><p>and fix your imports so code would be compilable and then run your tests once again. After all that fixes you would see the report:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#ff79c6">===============================</span> Coverage <span style="color:#8be9fd;font-style:italic">summary</span> <span style="color:#ff79c6">===============================</span>
+</span></span><span style="display:flex;"><span>Statements   : 6.54% <span style="color:#ff79c6">(</span> 7/107 <span style="color:#ff79c6">)</span>
+</span></span><span style="display:flex;"><span>Branches     : 0% <span style="color:#ff79c6">(</span> 0/26 <span style="color:#ff79c6">)</span>
+</span></span><span style="display:flex;"><span>Functions    : 9.09% <span style="color:#ff79c6">(</span> 1/11 <span style="color:#ff79c6">)</span>
+</span></span><span style="display:flex;"><span>Lines        : 6.73% <span style="color:#ff79c6">(</span> 7/104 <span style="color:#ff79c6">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">================================================================================</span>
+</span></span><span style="display:flex;"><span>reports written to /Users/rpeshkov/Developer/vscode-extensions/vscode-testcov/coverage
+</span></span></code></pre></div><p>Yay! All the information related to code coverage was saved to <code>coverage</code> folder in the root of your extension. You now can open <code>index.html</code> file there to see HTML-based report.</p>
 <p><a href="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-coverage/4-html-report.png"><img src="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-coverage/4-html-report.png" alt="HTML Code coverage report"></a></p>
 <p>It looks really nice, but you may noticed one small problem here that tests code was covered as well. That doesn&rsquo;t seem right, so let&rsquo;s fix it by some structural changes.</p>
 <h2 id="reorganizing-project">Reorganizing project</h2>
@@ -386,10 +386,10 @@ reports written to /Users/rpeshkov/Developer/vscode-extensions/vscode-testcov/co
 <p><a href="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-coverage/5-src-test-folders.png"><img src="https://s3.eu-central-1.amazonaws.com/rpeshkov.net/vscode-extension-coverage/5-src-test-folders.png" alt="src and test folders"></a></p>
 <p>With this change you also need to change a couple of parameters in your <code>tsconfig.json</code> file and <code>package.json</code> file.</p>
 <p>In your <code>tsconfig.json</code> file change <code>rootDir</code> parameter to <code>.</code>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="color:#f1fa8c">&#34;rootDir&#34;</span>: <span style="color:#f1fa8c">&#34;.&#34;</span>,
-</code></pre></div><p>In your <code>package.json</code> file change <code>main</code> parameter to <code>./out/src/extension</code>.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="color:#f1fa8c">&#34;main&#34;</span>: <span style="color:#f1fa8c">&#34;./out/src/extension&#34;</span>,
-</code></pre></div><p>Now relaunch your tests and you&rsquo;ll see that coverage report doesn&rsquo;t have coverage for your tests code.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#f1fa8c">&#34;rootDir&#34;</span>: <span style="color:#f1fa8c">&#34;.&#34;</span>,
+</span></span></code></pre></div><p>In your <code>package.json</code> file change <code>main</code> parameter to <code>./out/src/extension</code>.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span><span style="color:#f1fa8c">&#34;main&#34;</span>: <span style="color:#f1fa8c">&#34;./out/src/extension&#34;</span>,
+</span></span></code></pre></div><p>Now relaunch your tests and you&rsquo;ll see that coverage report doesn&rsquo;t have coverage for your tests code.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>Strange that VSCode extension generator doesn&rsquo;t have this functionality out of the box, but as you can see, it&rsquo;s actually not so hard to implement it by yourself. If you had any troubles during implementation of the steps above, you may get final version from the GitHub repository <a href="https://github.com/rpeshkov/vscode-testcov">https://github.com/rpeshkov/vscode-testcov</a> and compare it with what you got or you can ask me in Twitter and I&rsquo;ll try to help you.</p>
 
@@ -398,7 +398,7 @@ reports written to /Users/rpeshkov/Developer/vscode-extensions/vscode-testcov/co
     </main>
 </div>
 
-<footer class="footer">Copyright &copy; 2021 Roman Peshkov</footer>
+<footer class="footer">Copyright &copy; 2023 Roman Peshkov</footer>
 </body>
 </html>
 

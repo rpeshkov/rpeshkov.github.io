@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="generator" content="Hugo 0.88.1" />
+    <meta name="generator" content="Hugo 0.121.1">
 
     
         <title>Jenkins &middot; Roman Peshkov</title>
@@ -98,55 +98,55 @@ pipeline{ agent { label &#39;nodejs8&#39; } stages{ stage (&#39;checkout&#39;){ 
         <h2 id="jenkinsfile">Jenkinsfile</h2>
 <p>A <code>Jenkinsfile</code> is a text file that contains the definition of a Jenkins Pipeline and is checked into source control.</p>
 <p>Sample <code>Jenkinsfile</code> for Angular application. Taken from <a href="https://github.com/petenorth/angular-5-example">here</a></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">pipeline<span style="color:#ff79c6">{</span>
-  agent <span style="color:#ff79c6">{</span> label <span style="color:#f1fa8c">&#39;nodejs8&#39;</span> <span style="color:#ff79c6">}</span>
-  stages<span style="color:#ff79c6">{</span>
-    stage <span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#39;checkout&#39;</span><span style="color:#ff79c6">){</span>
-      steps<span style="color:#ff79c6">{</span>
-        checkout scm
-      <span style="color:#ff79c6">}</span>
-    <span style="color:#ff79c6">}</span>
-    stage <span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#39;install modules&#39;</span><span style="color:#ff79c6">){</span>
-      steps<span style="color:#ff79c6">{</span>
-        sh <span style="color:#f1fa8c">&#39;&#39;&#39;
-</span><span style="color:#f1fa8c">          npm install --verbose -d
-</span><span style="color:#f1fa8c">          npm install --save classlist.js
-</span><span style="color:#f1fa8c">        &#39;&#39;&#39;</span>
-      <span style="color:#ff79c6">}</span>
-    <span style="color:#ff79c6">}</span>
-    stage <span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#39;test&#39;</span><span style="color:#ff79c6">){</span>
-      steps<span style="color:#ff79c6">{</span>
-        sh <span style="color:#f1fa8c">&#39;&#39;&#39;
-</span><span style="color:#f1fa8c">          $(npm bin)/ng test --single-run --browsers Chrome_no_sandbox
-</span><span style="color:#f1fa8c">        &#39;&#39;&#39;</span>
-      <span style="color:#ff79c6">}</span>
-      post <span style="color:#ff79c6">{</span>
-          always <span style="color:#ff79c6">{</span>
-            junit <span style="color:#f1fa8c">&#34;test-results.xml&#34;</span>
-          <span style="color:#ff79c6">}</span>
-      <span style="color:#ff79c6">}</span>
-    <span style="color:#ff79c6">}</span>
-    stage <span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#39;code quality&#39;</span><span style="color:#ff79c6">){</span>
-      steps<span style="color:#ff79c6">{</span>
-        sh <span style="color:#f1fa8c">&#39;$(npm bin)/ng lint&#39;</span>
-      <span style="color:#ff79c6">}</span>
-    <span style="color:#ff79c6">}</span>
-    stage <span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#39;build&#39;</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
-      steps<span style="color:#ff79c6">{</span>
-        sh <span style="color:#f1fa8c">&#39;$(npm bin)/ng build --prod --build-optimizer&#39;</span>
-      <span style="color:#ff79c6">}</span>
-    <span style="color:#ff79c6">}</span>
-    stage <span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#39;build image&#39;</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
-      steps<span style="color:#ff79c6">{</span>
-        sh <span style="color:#f1fa8c">&#39;&#39;&#39;
-</span><span style="color:#f1fa8c">          rm -rf node_modules
-</span><span style="color:#f1fa8c">          oc start-build angular-5-example --from-dir=. --follow
-</span><span style="color:#f1fa8c">        &#39;&#39;&#39;</span>
-      <span style="color:#ff79c6">}</span>
-    <span style="color:#ff79c6">}</span>
-  <span style="color:#ff79c6">}</span>
-<span style="color:#ff79c6">}</span>
-</code></pre></div><h3 id="links">Links</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-groovy" data-lang="groovy"><span style="display:flex;"><span>pipeline<span style="color:#ff79c6">{</span>
+</span></span><span style="display:flex;"><span>  agent <span style="color:#ff79c6">{</span> label <span style="color:#f1fa8c">&#39;nodejs8&#39;</span> <span style="color:#ff79c6">}</span>
+</span></span><span style="display:flex;"><span>  stages<span style="color:#ff79c6">{</span>
+</span></span><span style="display:flex;"><span>    stage <span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#39;checkout&#39;</span><span style="color:#ff79c6">){</span>
+</span></span><span style="display:flex;"><span>      steps<span style="color:#ff79c6">{</span>
+</span></span><span style="display:flex;"><span>        checkout scm
+</span></span><span style="display:flex;"><span>      <span style="color:#ff79c6">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">}</span>
+</span></span><span style="display:flex;"><span>    stage <span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#39;install modules&#39;</span><span style="color:#ff79c6">){</span>
+</span></span><span style="display:flex;"><span>      steps<span style="color:#ff79c6">{</span>
+</span></span><span style="display:flex;"><span>        sh <span style="color:#f1fa8c">&#39;&#39;&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">          npm install --verbose -d
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">          npm install --save classlist.js
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">        &#39;&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#ff79c6">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">}</span>
+</span></span><span style="display:flex;"><span>    stage <span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#39;test&#39;</span><span style="color:#ff79c6">){</span>
+</span></span><span style="display:flex;"><span>      steps<span style="color:#ff79c6">{</span>
+</span></span><span style="display:flex;"><span>        sh <span style="color:#f1fa8c">&#39;&#39;&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">          $(npm bin)/ng test --single-run --browsers Chrome_no_sandbox
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">        &#39;&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#ff79c6">}</span>
+</span></span><span style="display:flex;"><span>      post <span style="color:#ff79c6">{</span>
+</span></span><span style="display:flex;"><span>          always <span style="color:#ff79c6">{</span>
+</span></span><span style="display:flex;"><span>            junit <span style="color:#f1fa8c">&#34;test-results.xml&#34;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#ff79c6">}</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#ff79c6">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">}</span>
+</span></span><span style="display:flex;"><span>    stage <span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#39;code quality&#39;</span><span style="color:#ff79c6">){</span>
+</span></span><span style="display:flex;"><span>      steps<span style="color:#ff79c6">{</span>
+</span></span><span style="display:flex;"><span>        sh <span style="color:#f1fa8c">&#39;$(npm bin)/ng lint&#39;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#ff79c6">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">}</span>
+</span></span><span style="display:flex;"><span>    stage <span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#39;build&#39;</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+</span></span><span style="display:flex;"><span>      steps<span style="color:#ff79c6">{</span>
+</span></span><span style="display:flex;"><span>        sh <span style="color:#f1fa8c">&#39;$(npm bin)/ng build --prod --build-optimizer&#39;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#ff79c6">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">}</span>
+</span></span><span style="display:flex;"><span>    stage <span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#39;build image&#39;</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+</span></span><span style="display:flex;"><span>      steps<span style="color:#ff79c6">{</span>
+</span></span><span style="display:flex;"><span>        sh <span style="color:#f1fa8c">&#39;&#39;&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">          rm -rf node_modules
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">          oc start-build angular-5-example --from-dir=. --follow
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">        &#39;&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#ff79c6">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">}</span>
+</span></span></code></pre></div><h3 id="links">Links</h3>
 <ul>
 <li><a href="https://jenkins.io/doc/book/pipeline/jenkinsfile/">Using a Jenkinsfile</a></li>
 <li><a href="https://antonyderham.me/post/jenkins-docker-pipelines/">Declarative Jenkins Docker Pipeline for Angular CLI applications</a></li>
@@ -157,7 +157,7 @@ pipeline{ agent { label &#39;nodejs8&#39; } stages{ stage (&#39;checkout&#39;){ 
     </main>
 </div>
 
-<footer class="footer">Copyright &copy; 2021 Roman Peshkov</footer>
+<footer class="footer">Copyright &copy; 2023 Roman Peshkov</footer>
 </body>
 </html>
 
